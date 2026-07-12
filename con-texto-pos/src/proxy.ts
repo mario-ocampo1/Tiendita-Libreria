@@ -1,7 +1,11 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-const RUTAS_PUBLICAS = ['/auth/login'];
+const RUTAS_PUBLICAS = [
+  '/auth/login',
+  '/auth/callback',
+  '/auth/set-password',
+];
 
 export async function proxy(request: NextRequest) {
   const response = NextResponse.next({

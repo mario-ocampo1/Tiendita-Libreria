@@ -1,7 +1,8 @@
 'use client';
 
 import './login.css';
-import { useActionState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import Image from 'next/image';
 import { loginAction, type LoginState } from './actions';
@@ -32,6 +33,35 @@ function SubmitButton() {
 
 export default function LoginPage() {
   const [state, formAction] = useActionState(loginAction, INITIAL_STATE);
+  const router = useRouter();
+  const [urlError, setUrlError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    
+    // Si hay error en el hash (ej. link expirado o usado)
+    if (hash.includes('error=')) {
+      const hashParams = new URLSearchParams(hash.replace('#', ''));
+      const errorDesc = hashParams.get('error_description');
+      
+      if (errorDesc?.includes('expired') || hashParams.get('error_code') === 'otp_expired') {
+        setUrlError('El enlace de invitación ha expirado o ya fue utilizado. Por favor, solicitá uno nuevo.');
+      } else {
+        setUrlError(errorDesc || 'Ocurrió un error al verificar el enlace.');
+      }
+      
+      // Limpiamos el hash para que no quede en la URL
+      window.history.replaceState(null, '', window.location.pathname);
+      return;
+    }
+
+    // Si llegamos aquí desde el link de invitación válido
+    if (hash.includes('access_token')) {
+      router.replace(`/auth/callback${hash}`);
+    }
+  }, [router]);
+
+  const displayError = urlError || state.error;
 
   return (
     <div className="login-root">
@@ -88,14 +118,14 @@ export default function LoginPage() {
             />
           </div>
 
-          {state.error && (
+          {displayError && (
             <div className="login-error" role="alert" aria-live="polite">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
                 <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
-              {state.error}
+              {displayError}
             </div>
           )}
 
