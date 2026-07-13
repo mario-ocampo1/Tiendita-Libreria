@@ -12,12 +12,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#e3e3e5]">
       {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200 shadow-sm">
+      <nav className="bg-[#e3e3e5] border-b border-gray-300 shadow-sm">
         <div className="max-w-full mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Con-Texto POS</h1>
+          <div className="flex items-center justify-between">
+
+            <img src="/Logo.jpeg" alt="Con-Texto POS Logo" className="h-10 w-10" />
+            <h1 className="text-xl font-semibold text-gray-900">Con-Texto Chacras</h1>
             <UserMenu />
           </div>
         </div>
@@ -26,23 +28,23 @@ export default function DashboardLayout({
       {/* Layout de dos columnas */}
       <div className="flex h-[calc(100vh-70px)]">
         {/* Sidebar - Menu lateral */}
-        <aside className="w-56 bg-emerald-900 text-white">
+        <aside className="w-56 bg-blue-600 text-white">
           <nav className="p-4 space-y-2">
             <a
               href="/dashboard"
-              className="block px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-600"
+              className="block px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-600"
             >
                Resumen
             </a>
             <a
               href="/dashboard/caja"
-              className="block px-4 py-2 rounded-lg hover:bg-emerald-700"
+              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
             >
                Caja del día
             </a>
             <a
               href="/dashboard/ventas"
-              className="block px-4 py-2 rounded-lg hover:bg-emerald-700"
+              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
             >
                Ventas del día
             </a>
@@ -50,24 +52,24 @@ export default function DashboardLayout({
           </nav>
 
           {/* Separador visual */}
-          <div className="border-t border-emerald-700 mx-4 my-4" />
+          <div className="border-t border-blue-700 mx-4 my-4" />
 
           <nav className="p-4 space-y-2">
             <a
               href="/dashboard/productos"
-              className="block px-4 py-2 rounded-lg hover:bg-emerald-700"
+              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
             >
                Productos
             </a>
             <a
               href="/dashboard/stock"
-              className="block px-4 py-2 rounded-lg hover:bg-emerald-700"
+              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
             >
                Stock y vencimientos
             </a>
             <a
               href="/dashboard/categorias"
-              className="block px-4 py-2 rounded-lg hover:bg-emerald-700"
+              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
             >
              Categorías
             </a>
@@ -75,7 +77,7 @@ export default function DashboardLayout({
         </aside>
 
         {/* Contenido principal */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto bg-[#191970]">
           <div className="p-6">{children}</div>
         </main>
       </div>

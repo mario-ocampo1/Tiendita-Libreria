@@ -19,10 +19,10 @@ export default function CashStatus({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-gray-200 mb-6">
+    <div className="bg-[#FFFDD0] rounded-2xl p-6 border border-gray-200 mb-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className={`w-4 h-4 rounded-full ${isOpen ? 'bg-emerald-500' : 'bg-red-500'}`} />
+          <div className={`w-4 h-4 rounded-full ${isOpen ? 'bg-green-500' : 'bg-red-500'}`} />
           <div>
             <p className="text-sm text-gray-600">Estado de caja</p>
             <p className="text-2xl font-bold text-gray-900">
@@ -42,7 +42,7 @@ export default function CashStatus({
           </button>
         )}
         {!isOpen && (
-          <button className="px-6 py-2 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 font-medium">
+          <button className="px-6 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 font-medium">
             Abrir caja
           </button>
         )}

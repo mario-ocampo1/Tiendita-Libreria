@@ -27,9 +27,9 @@ export default async function DashboardPage() {
             Lunes 6 de julio · un vistazo a tu comercio
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-2">
-          <span className="w-2 h-2 bg-emerald-500 rounded-full" />
-          <span className="text-sm font-medium text-emerald-700">Caja abierta</span>
+        <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-2">
+          <span className="w-2 h-2 bg-blue-600 rounded-full" />
+          <span className="text-sm font-medium text-blue-700">Caja abierta</span>
         </div>
       </div>
 

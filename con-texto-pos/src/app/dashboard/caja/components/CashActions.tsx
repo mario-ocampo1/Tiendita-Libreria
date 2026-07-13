@@ -30,7 +30,7 @@ export default function CashActions() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg py-3 font-medium transition"
+          className="bg-green-600 hover:bg-green-700 text-white rounded-lg py-3 font-medium transition"
         >
           ➕ Registrar ingreso
         </button>
@@ -47,7 +47,7 @@ export default function CashActions() {
 
       {/* Formulario modal */}
       {isOpen && (
-        <div className="bg-white rounded-2xl p-6 border border-gray-200">
+        <div className="bg-[#FFFDD0] rounded-2xl p-6 border border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Registrar movimiento
           </h3>
@@ -113,7 +113,7 @@ export default function CashActions() {
             <div className="flex gap-3 pt-4">
               <button
                 type="submit"
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg py-2 font-medium transition"
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white rounded-lg py-2 font-medium transition"
               >
                 Guardar
               </button>
