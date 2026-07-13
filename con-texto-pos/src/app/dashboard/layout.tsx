@@ -32,19 +32,19 @@ export default function DashboardLayout({
               href="/dashboard"
               className="block px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-600"
             >
-              📊 Resumen
+               Resumen
             </a>
             <a
               href="/dashboard/caja"
               className="block px-4 py-2 rounded-lg hover:bg-emerald-700"
             >
-              💰 Caja del día
+               Caja del día
             </a>
             <a
               href="/dashboard/ventas"
               className="block px-4 py-2 rounded-lg hover:bg-emerald-700"
             >
-              📈 Ventas del día
+               Ventas del día
             </a>
           
           </nav>
