@@ -33,7 +33,7 @@ export default function UserMenu() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100"
       >
-        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+        <div className="w-8 h-8 bg-[#1a237e] rounded-full flex items-center justify-center text-white text-sm font-semibold">
           {user.email?.charAt(0).toUpperCase()}
         </div>
         <span className="text-sm font-medium text-gray-700">{user.email}</span>
@@ -53,7 +53,7 @@ export default function UserMenu() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-[#FFFDD0] rounded-lg shadow-lg border border-gray-200 z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-[#FFFBF0] rounded-lg shadow-lg border border-[#e8eaf6] z-50">
           <button
             onClick={handleLogout}
             className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg"

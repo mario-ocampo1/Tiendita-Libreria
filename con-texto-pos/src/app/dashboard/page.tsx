@@ -22,14 +22,14 @@ export default async function DashboardPage() {
       {/* Encabezado */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Resumen del día</h1>
+          <h1 className="text-3xl font-bold text-[#1a237e]">Resumen del día</h1>
           <p className="text-gray-600 mt-1">
             Lunes 6 de julio · un vistazo a tu comercio
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-2">
-          <span className="w-2 h-2 bg-blue-600 rounded-full" />
-          <span className="text-sm font-medium text-blue-700">Caja abierta</span>
+        <div className="flex items-center gap-2 bg-[#e8eaf6] border border-[#d0d5eb] rounded-full px-4 py-2">
+          <span className="w-2 h-2 bg-[#1a237e] rounded-full" />
+          <span className="text-sm font-medium text-[#1a237e]">Caja abierta</span>
         </div>
       </div>
 

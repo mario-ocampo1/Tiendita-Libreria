@@ -37,7 +37,7 @@ export default function CashActions() {
         <button className="bg-red-600 hover:bg-red-700 text-white rounded-lg py-3 font-medium transition">
           ➖ Registrar egreso
         </button>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-3 font-medium transition">
+        <button className="bg-[#1a237e] hover:bg-[#283593] text-white rounded-lg py-3 font-medium transition">
           🔄 Arqueo
         </button>
         <button className="bg-gray-600 hover:bg-gray-700 text-white rounded-lg py-3 font-medium transition">
@@ -47,8 +47,8 @@ export default function CashActions() {
 
       {/* Formulario modal */}
       {isOpen && (
-        <div className="bg-[#FFFDD0] rounded-2xl p-6 border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-[#FFFBF0] rounded-2xl p-6 border border-[#e8eaf6]">
+          <h3 className="text-lg font-semibold text-[#1a237e] mb-4">
             Registrar movimiento
           </h3>
 

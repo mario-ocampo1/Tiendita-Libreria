@@ -29,8 +29,8 @@ const QUICK_ACCESS_LINKS: QuickAccessLink[] = [
 
 export default function QuickAccess() {
   return (
-    <div className="bg-[#FFFDD0] rounded-2xl p-6 border border-blue-200">
-      <h2 className="text-xl font-semibold text-blue-900 mb-4">
+    <div className="bg-[#FFFBF0] rounded-2xl p-6 border border-[#e8eaf6]">
+      <h2 className="text-xl font-semibold text-[#1a237e] mb-4">
         Accesos rápidos
       </h2>
 
@@ -39,10 +39,10 @@ export default function QuickAccess() {
           <a
             key={link.href}
             href={link.href}
-            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 transition-colors"
+            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-[#e8eaf6] hover:bg-[#d0d5eb] border border-[#d0d5eb] hover:border-[#c5cce0] transition-colors"
           >
             <span className="text-2xl">{link.icon}</span>
-            <span className="text-xs font-medium text-center text-blue-700">
+            <span className="text-xs font-medium text-center text-[#1a237e]">
               {link.label}
             </span>
           </a>

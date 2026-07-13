@@ -12,9 +12,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-[#e3e3e5]">
+    <div className="min-h-screen bg-[#FAFAF8]">
       {/* Navbar */}
-      <nav className="bg-[#e3e3e5] border-b border-gray-300 shadow-sm">
+      <nav className="bg-[#FAFAF8] border-b border-gray-300 shadow-sm">
         <div className="max-w-full mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
 
@@ -28,11 +28,11 @@ export default function DashboardLayout({
       {/* Layout de dos columnas */}
       <div className="flex h-[calc(100vh-70px)]">
         {/* Sidebar - Menu lateral */}
-        <aside className="w-56 bg-blue-600 text-white">
+        <aside className="w-56 bg-[#1a237e] text-white">
           <nav className="p-4 space-y-2">
             <a
               href="/dashboard"
-              className="block px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-600"
+              className="block px-4 py-2 rounded-lg bg-[#283593] hover:bg-[#1a237e]"
             >
                Resumen
             </a>
@@ -52,7 +52,7 @@ export default function DashboardLayout({
           </nav>
 
           {/* Separador visual */}
-          <div className="border-t border-blue-700 mx-4 my-4" />
+          <div className="border-t border-[#283593] mx-4 my-4" />
 
           <nav className="p-4 space-y-2">
             <a
@@ -77,7 +77,7 @@ export default function DashboardLayout({
         </aside>
 
         {/* Contenido principal */}
-        <main className="flex-1 overflow-y-auto bg-[#191970]">
+        <main className="flex-1 overflow-y-auto bg-[#FAFAF8]">
           <div className="p-6">{children}</div>
         </main>
       </div>
