@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import CashSaleSession from './CashSaleSession';
+
 
 interface MovementFormState {
   type: 'income' | 'expense';
@@ -9,8 +11,10 @@ interface MovementFormState {
 }
 
 export default function CashActions() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isManualOpen, setIsManualOpen] = useState(false);
+  const [isSaleOpen, setIsSaleOpen] = useState(false);
   const [formData, setFormData] = useState<MovementFormState>({
+
     type: 'income',
     description: '',
     amount: '',
@@ -19,24 +23,34 @@ export default function CashActions() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Enviar a Supabase
-    console.log('Movimiento registrado:', formData);
+        console.log('Movimiento registrado:', formData);
     setFormData({ type: 'income', description: '', amount: '' });
-    setIsOpen(false);
+    setIsManualOpen(false);
   };
+
+  const handleSaleSave = (items: any[], total: number) => {
+    // TODO: Enviar a Supabase como una venta real
+    console.log('Venta realizada:', { items, total });
+  };
+
 
   return (
     <div className="space-y-4">
       {/* Botones de acciones rápidas */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="bg-green-600 hover:bg-green-700 text-white rounded-lg py-3 font-medium transition"
+          onClick={() => setIsSaleOpen(true)}
+          className="bg-green-600 hover:bg-green-700 text-white rounded-lg py-3 font-medium transition flex items-center justify-center gap-2"
         >
-          ➕ Registrar ingreso
+          <span>➕</span> Nuevo ingreso
         </button>
-        <button className="bg-red-600 hover:bg-red-700 text-white rounded-lg py-3 font-medium transition">
-          ➖ Registrar egreso
+        <button 
+          onClick={() => setIsManualOpen(!isManualOpen)}
+          className="bg-red-600 hover:bg-red-700 text-white rounded-lg py-3 font-medium transition flex items-center justify-center gap-2"
+        >
+          <span>➖</span> Registrar egreso
         </button>
+
         <button className="bg-[#1a237e] hover:bg-[#283593] text-white rounded-lg py-3 font-medium transition">
           🔄 Arqueo
         </button>
@@ -45,8 +59,17 @@ export default function CashActions() {
         </button>
       </div>
 
-      {/* Formulario modal */}
-      {isOpen && (
+            {/* Modal de Sesión de Venta */}
+      {isSaleOpen && (
+        <CashSaleSession 
+          onClose={() => setIsSaleOpen(false)} 
+          onSave={handleSaleSave}
+        />
+      )}
+
+      {/* Formulario modal manual */}
+      {isManualOpen && (
+
         <div className="bg-[#FFFBF0] rounded-2xl p-6 border border-[#e8eaf6]">
           <h3 className="text-lg font-semibold text-[#1a237e] mb-4">
             Registrar movimiento
@@ -119,7 +142,8 @@ export default function CashActions() {
               </button>
               <button
                 type="button"
-                onClick={() => setIsOpen(false)}
+                                onClick={() => setIsManualOpen(false)}
+
                 className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg py-2 font-medium transition"
               >
                 Cancelar
