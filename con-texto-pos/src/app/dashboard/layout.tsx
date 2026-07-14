@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import UserMenu from './components/UserMenu';
+import './dashboard.css';
 
 export const metadata: Metadata = {
   title: 'Dashboard | Con-Texto POS',
@@ -12,73 +13,52 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-[#FAFAF8]">
+    <div className="min-h-screen flex flex-col bg-[#FAFAF8]">
       {/* Navbar */}
       <nav className="bg-[#FAFAF8] border-b border-gray-300 shadow-sm">
         <div className="max-w-full mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-
             <img src="/Logo.jpeg" alt="Con-Texto POS Logo" className="h-10 w-10" />
-            <h1 className="text-xl font-semibold text-gray-900">Con-Texto Chacras</h1>
+            <h1 className="text-lg font-semibold text-[#1a237e]">Con-Texto Chacras</h1>
             <UserMenu />
           </div>
         </div>
       </nav>
 
       {/* Layout de dos columnas */}
-      <div className="flex h-[calc(100vh-70px)]">
+      <div className="flex flex-1">
         {/* Sidebar - Menu lateral */}
-        <aside className="w-56 bg-[#1a237e] text-white">
+        <aside className="w-56 bg-[#1a237e] text-white overflow-y-auto">
           <nav className="p-4 space-y-2">
-            <a
-              href="/dashboard"
-              className="block px-4 py-2 rounded-lg bg-[#283593] hover:bg-[#1a237e]"
-            >
-               Resumen
+            <a href="/dashboard" className="sidebar-link active">
+              Resumen
             </a>
-            <a
-              href="/dashboard/caja"
-              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-               Caja del día
+            <a href="/dashboard/caja" className="sidebar-link">
+              Caja del día
             </a>
-            <a
-              href="/dashboard/ventas"
-              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-               Ventas del día
+            <a href="/dashboard/ventas" className="sidebar-link">
+              Ventas del día
             </a>
-          
           </nav>
 
-          {/* Separador visual */}
           <div className="border-t border-[#283593] mx-4 my-4" />
 
           <nav className="p-4 space-y-2">
-            <a
-              href="/dashboard/productos"
-              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-               Productos
+            <a href="/dashboard/productos" className="sidebar-link">
+              Productos
             </a>
-            <a
-              href="/dashboard/stock"
-              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-               Stock y vencimientos
+            <a href="/dashboard/stock" className="sidebar-link">
+              Stock y vencimientos
             </a>
-            <a
-              href="/dashboard/categorias"
-              className="block px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-             Categorías
+            <a href="/dashboard/categorias" className="sidebar-link">
+              Categorías
             </a>
           </nav>
         </aside>
 
         {/* Contenido principal */}
-        <main className="flex-1 overflow-y-auto bg-[#FAFAF8]">
-          <div className="p-6">{children}</div>
+        <main className="flex-1 overflow-y-auto bg-[#FAFAF8] p-6">
+          {children}
         </main>
       </div>
     </div>
