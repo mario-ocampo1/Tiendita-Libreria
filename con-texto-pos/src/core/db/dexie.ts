@@ -39,7 +39,7 @@ export interface CashSessionItem {
   id: string;
   session_id: string;
   product_id: string;
-  codigo_barras: string;
+  barcode: string;  // ← AGREGÁ ESTA LÍNEA
   product_name: string;
   quantity: number;
   unit_price: number;
