@@ -98,40 +98,53 @@ export default function CajaOperativa({
   function quitarItem(productoId: string) {
     setCart((prev) => prev.filter((i) => i.producto_id !== productoId));
   }
-
-  async function handleCobrar() {
-    if (cart.length === 0) return;
-    setProcesando(true);
-    setErrorMsg('');
-    try {
-      await registrarVenta({
-        usuarioId,
-        cajaSesionId: sesion.id,
-        metodoPago,
-        descuento,
-        items: cart.map((i) => ({
-          producto_id: i.producto_id,
-          cantidad: i.cantidad,
-          precio_unitario: i.precio_unitario,
-        })),
-      });
-      setUltimaVenta({
-        items: cart,
-        total: totalAPagar,
-        subtotal: totalCarrito,
-        descuento,
-        metodoPago,
-        fecha: new Date(),
-      });
-      setCart([]);
-      setDescuento(0);
-      router.refresh();
-    } catch (err: any) {
-      setErrorMsg(err.message ?? 'Error al registrar la venta');
-    } finally {
-      setProcesando(false);
-    }
+async function handleCobrar() {
+  if (cart.length === 0) return;
+  setProcesando(true);
+  setErrorMsg('');
+  try {
+    console.log('Registrando venta con datos:', {
+      usuarioId,
+      cajaSesionId: sesion.id,
+      metodoPago,
+      descuento,
+      items: cart.map((i) => ({
+        producto_id: i.producto_id,
+        cantidad: i.cantidad,
+        precio_unitario: i.precio_unitario,
+      })),
+    });
+    
+    await registrarVenta({
+      usuarioId,
+      cajaSesionId: sesion.id,
+      metodoPago,
+      descuento,
+      items: cart.map((i) => ({
+        producto_id: i.producto_id,
+        cantidad: i.cantidad,
+        precio_unitario: i.precio_unitario,
+      })),
+    });
+    
+    setUltimaVenta({
+      items: cart,
+      total: totalAPagar,
+      subtotal: totalCarrito,
+      descuento,
+      metodoPago,
+      fecha: new Date(),
+    });
+    setCart([]);
+    setDescuento(0);
+    router.refresh();
+  } catch (err: any) {
+    console.error('Error al registrar venta:', err);
+    setErrorMsg(err.message ?? JSON.stringify(err));
+  } finally {
+    setProcesando(false);
   }
+}
 
   return (
     <div className="grid md:grid-cols-3 gap-6">
