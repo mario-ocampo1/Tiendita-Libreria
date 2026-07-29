@@ -38,13 +38,13 @@ export interface CashSession {
 export interface CashSessionItem {
   id: string;
   session_id: string;
-  product_id: string;
-  barcode: string;  // ← AGREGÁ ESTA LÍNEA
-  product_name: string;
-  quantity: number;
-  unit_price: number;
-  total_price: number;
-  added_at: string;
+  producto_id: string;
+  codigo_barras: string;
+  nombre_producto: string;
+  cantidad: number;
+  precio_unitario: number;
+  total_precio: number;
+  agregado_en: string;
 }
 
 // Cola genérica de operaciones pendientes de sincronizar contra Supabase.

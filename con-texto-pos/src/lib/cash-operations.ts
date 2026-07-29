@@ -59,32 +59,32 @@ export async function addProductToSession(
   const existingItem = await localDb.cashSessionItems
     .where('session_id')
     .equals(sessionId)
-    .filter((item) => item.product_id === product.id)
+    .filter((item) => item.producto_id === product.id)
     .first();
 
   if (existingItem) {
-    // Actualizar cantidad
-    const updatedItem: CashSessionItem = {
-      ...existingItem,
-      quantity: existingItem.quantity + quantity,
-      total_price: (existingItem.quantity + quantity) * existingItem.unit_price,
-    };
-    await localDb.cashSessionItems.update(existingItem.id, updatedItem);
-    return updatedItem;
-  }
+  // Actualizar cantidad
+  const updatedItem: CashSessionItem = {
+    ...existingItem,
+    cantidad: existingItem.cantidad + quantity,
+    total_precio: (existingItem.cantidad + quantity) * existingItem.precio_unitario,
+  };
+  await localDb.cashSessionItems.update(existingItem.id, updatedItem);
+  return updatedItem;
+}
 
   // Crear nuevo item
-  const newItem: CashSessionItem = {
-    id: uuidv4(),
-    session_id: sessionId,
-    product_id: product.id,
-    barcode: product.barcode,
-    product_name: product.name,
-    quantity,
-    unit_price: product.price,
-    total_price: quantity * product.price,
-    added_at: new Date().toISOString(),
-  };
+ const newItem: CashSessionItem = {
+  id: uuidv4(),
+  session_id: sessionId,
+  producto_id: product.id,
+  codigo_barras: product.codigo_barras,
+  nombre_producto: product.nombre,
+  cantidad: quantity,
+  precio_unitario: product.precio_venta,
+  total_precio: quantity * product.precio_venta,
+  agregado_en: new Date().toISOString(),
+};
 
   await localDb.cashSessionItems.add(newItem);
   return newItem;
@@ -119,8 +119,8 @@ export async function updateItemQuantity(itemId: string, newQuantity: number): P
 
   const updatedItem: CashSessionItem = {
     ...item,
-    quantity: newQuantity,
-    total_price: newQuantity * item.unit_price,
+    cantidad: newQuantity,
+    total_precio: newQuantity * item.precio_unitario,
   };
 
   await localDb.cashSessionItems.update(itemId, updatedItem);
@@ -135,8 +135,8 @@ export async function calculateSessionTotals(sessionId: string) {
   const items = await getSessionItems(sessionId);
 
   const totals = {
-    subtotal: items.reduce((sum, item) => sum + item.total_price, 0),
-    itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
+    subtotal: items.reduce((sum, item) => sum + item.total_precio, 0),
+    itemCount: items.reduce((sum, item) => sum + item.cantidad, 0),
     uniqueProducts: items.length,
   };
 
