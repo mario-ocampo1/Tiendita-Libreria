@@ -212,7 +212,7 @@ export default function CashSaleSession({ onClose, onSave }: CashSaleSessionProp
                         {/* Total del item */}
                         <div className="text-right w-20">
                           <p className="font-bold text-[#1a237e]">
-                            ${item.total_price.toFixed(2)}
+                            ${item.total_precio.toFixed(2)}
                           </p>
                         </div>
 
