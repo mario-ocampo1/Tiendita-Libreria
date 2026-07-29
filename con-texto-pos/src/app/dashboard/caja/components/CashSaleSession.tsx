@@ -179,9 +179,9 @@ export default function CashSaleSession({ onClose, onSave }: CashSaleSessionProp
                       className="bg-white p-4 rounded-lg border border-gray-200 flex items-center justify-between hover:shadow-md transition"
                     >
                       <div className="flex-1">
-                        <h4 className="font-semibold text-[#1a237e]">{item.product_name}</h4>
+                        <h4 className="font-semibold text-[#1a237e]">{item.nombre_producto}</h4>
                         <p className="text-sm text-gray-500">
-                          ${item.unit_price.toFixed(2)} c/u
+                          ${item.precio_unitario.toFixed(2)} c/u
                         </p>
                       </div>
 
@@ -191,18 +191,18 @@ export default function CashSaleSession({ onClose, onSave }: CashSaleSessionProp
                           <button
                             type="button"
                             onClick={() =>
-                              updateQuantity(item.id, Math.max(1, item.quantity - 1))
+                              updateQuantity(item.id, Math.max(1, item.cantidad - 1))
                             }
                             className="w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded-md transition"
                           >
                             −
                           </button>
                           <span className="w-8 text-center font-medium text-sm">
-                            {item.quantity}
+                            {item.cantidad}
                           </span>
                           <button
                             type="button"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.id, item.cantidad + 1)}
                             className="w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded-md transition"
                           >
                             +
