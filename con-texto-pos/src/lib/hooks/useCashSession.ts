@@ -182,7 +182,8 @@ export function useCashSession(): UseCashSessionReturn {
       setItems((prevItems) =>
         prevItems.map((item) =>
           item.id === itemId
-            ? { ...item, quantity, total_price: quantity * item.unit_price }
+            // Acá estaba el error, cambiado de unit_price a precio_unitario
+            ? { ...item, quantity, total_price: quantity * item.precio_unitario }
             : item
         )
       );

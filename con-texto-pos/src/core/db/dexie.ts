@@ -14,14 +14,18 @@ export interface LocalProduct {
 
 export interface PendingSale {
   local_id: string;
+  caja_sesion_id: string;      // ← falta
+  usuario_id: string;          // ← falta
   items: Array<{
     product_id: string;
-    quantity: number;
-    unit_price: number;
+    cantidad: number;           // ← cambiar a español
+    precio_unitario: number;    // ← cambiar a español
   }>;
   total: number;
-  payment_method: 'cash' | 'card' | 'mercado_pago';
-  status: 'pending' | 'syncing' | 'failed';
+  subtotal: number;             // ← falta
+  descuento: number;            // ← falta
+  metodo_pago: 'efectivo' | 'tarjeta' | 'transferencia' | 'mercado_pago';  // ← español
+  status: 'pending' | 'syncing' | 'failed' | 'synced';  // ← agregar 'synced'
   created_at: string;
 }
 
@@ -51,7 +55,7 @@ export interface CashSessionItem {
 // Se usa para productos por ahora; puede reutilizarse para otras entidades.
 export interface SyncQueueItem {
   id: string; // uuid propio de la entrada de cola
-  entity: 'productos'; // extender con más entidades si hace falta ('clientes', etc.)
+  entity: 'productos' | 'ventas';
   entity_id: string; // id del registro afectado (mismo id que en la tabla local)
   operation: 'create' | 'update' | 'delete';
   payload: Record<string, unknown>;
@@ -89,6 +93,13 @@ export class PosDatabase extends Dexie {
       cashSessionItems: 'id, session_id, codigo_barras, added_at',
       syncQueue: 'id, entity, entity_id, status, created_at',
     });
+    this.version(4).stores({
+  products: 'id, codigo_barras, nombre',
+  pendingSales: 'local_id, status, created_at',
+  cashSessions: 'id, status, opened_at',
+  cashSessionItems: 'id, session_id, codigo_barras, agregado_en', // ← corregido
+  syncQueue: 'id, entity, entity_id, status, created_at',
+});
   }
 }
 

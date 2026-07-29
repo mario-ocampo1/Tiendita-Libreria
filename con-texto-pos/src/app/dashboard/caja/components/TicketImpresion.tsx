@@ -10,6 +10,7 @@ type Props = {
   total: number;
   metodoPago: string;
   fecha: Date;
+  offline: boolean;
   onCerrar: () => void;
 };
 
@@ -20,7 +21,17 @@ const METODO_LABELS: Record<string, string> = {
   mercado_pago: 'Mercado Pago',
 };
 
-export default function TicketImpresion({ numeroTicket, items, subtotal, descuento, total, metodoPago, fecha, onCerrar }: Props) {
+export default function TicketImpresion({ 
+  numeroTicket, 
+  items, 
+  subtotal, 
+  descuento, 
+  total, 
+  metodoPago, 
+  fecha, 
+  offline, 
+  onCerrar 
+}: Props) {
   function imprimir() {
     window.print();
   }
@@ -34,9 +45,18 @@ export default function TicketImpresion({ numeroTicket, items, subtotal, descuen
             <h2 className="font-bold text-lg">Venta registrada</h2>
             <button onClick={onCerrar} className="text-gray-500 hover:text-gray-700 text-xl">×</button>
           </div>
+          
           <p className="text-sm text-gray-600">
             Total cobrado: <span className="font-bold">${total.toFixed(2)}</span> — {METODO_LABELS[metodoPago] ?? metodoPago}
           </p>
+
+          {/* Indicador Offline */}
+          {offline && (
+            <p className="text-xs text-yellow-600 bg-yellow-50 rounded p-2">
+              Venta guardada localmente. Se sincronizará cuando haya conexión.
+            </p>
+          )}
+
           <div className="flex gap-2">
             <button
               onClick={imprimir}
