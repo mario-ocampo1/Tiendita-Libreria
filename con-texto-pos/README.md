@@ -110,6 +110,7 @@ src/
 - **Framework**: [Next.js](https://nextjs.org) (App Router)
 - **Lenguaje**: TypeScript (estricto)
 - **Estilos**: Tailwind CSS
+- **Iconos**: Heroicons
 - **Base de Datos**: Supabase
 - **Almacenamiento Local**: Dexie (IndexedDB)
 - **Autenticación**: Supabase Auth

@@ -1,0 +1,80 @@
+/* Ocultar el ticket en pantalla normal */
+.ticket-print {
+  display: none;
+}
+
+/* Al imprimir: ocultar TODO excepto el ticket */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .ticket-print,
+  .ticket-print * {
+    visibility: visible;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .ticket-print {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80mm; /* ancho estándar de ticket aunque sea en impresora normal */
+    font-family: monospace;
+    font-size: 12px;
+    color: #000;
+    padding: 4mm;
+  }
+  .ticket-header {
+    text-align: center;
+    margin-bottom: 4mm;
+  }
+  .ticket-negocio {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .ticket-sub {
+    font-size: 11px;
+  }
+  .ticket-fecha, .ticket-numero {
+    font-size: 11px;
+    margin-top: 2mm;
+  }
+  .ticket-linea {
+    border-top: 1px dashed #000;
+    margin: 3mm 0;
+  }
+  .ticket-tabla {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .ticket-td-nombre {
+    width: 55%;
+    padding: 1mm 0;
+  }
+  .ticket-td-cant {
+    width: 10%;
+    text-align: center;
+  }
+  .ticket-td-precio {
+    width: 35%;
+    text-align: right;
+  }
+  .ticket-fila {
+    display: flex;
+    justify-content: space-between;
+    padding: 1mm 0;
+    font-size: 12px;
+  }
+  .ticket-total {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 2mm 0;
+  }
+  .ticket-footer {
+    text-align: center;
+    margin-top: 4mm;
+    font-size: 11px;
+  }
+}

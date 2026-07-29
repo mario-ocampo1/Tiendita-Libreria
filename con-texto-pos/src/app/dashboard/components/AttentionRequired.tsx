@@ -24,8 +24,8 @@ export default function AttentionRequired({ alerts }: AttentionRequiredProps) {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-gray-200">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">
+    <div className="bg-[#FFFBF0] rounded-2xl p-6 border border-[#e8eaf6]">
+      <h2 className="text-xl font-semibold text-[#1a237e] mb-4">
         Necesita tu atención
       </h2>
 

@@ -1,0 +1,512 @@
+/* ============================================================
+   ESTILOS GLOBALES DEL DASHBOARD — Con-Texto POS
+   
+   Este archivo centraliza todos los estilos reutilizables
+   del dashboard. Basado en la colorimetría del logo y 
+   la página de autenticación.
+   
+   Estructura:
+   1. Variables de diseño
+   2. Resets y utilidades
+   3. Componentes reutilizables
+   4. Estados interactivos
+   5. Responsive design
+   ============================================================ */
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 1: VARIABLES DE DISEÑO
+   Paleta de colores, espaciado, tipografía y transiciones
+   ──────────────────────────────────────────────────────────── */
+
+:root {
+  /* Colores Primarios */
+  --color-primary-dark: #1a237e;        /* Azul Marina Profundo - Navbar, Sidebar, textos principales */
+  --color-primary-mid: #283593;         /* Azul Marina Medio - Hover states, variaciones */
+  --color-primary-light: #3949ab;       /* Azul Marina Claro - Accents adicionales */
+  --color-primary-pale: #e8eaf6;        /* Azul Pálido - Backgrounds suaves, borders */
+
+  /* Fondos */
+  --color-bg-main: #fafaf8;             /* Crema Suave - Background general */
+  --color-bg-card: #fffbf0;             /* Crema Clara - Cards y componentes */
+
+  /* Grises y Neutros */
+  --color-gray-dark: #1c1c2e;           /* Texto principal */
+  --color-gray-mid: #6b7280;            /* Texto secundario */
+  --color-gray-light: #f3f4f6;          /* Backgrounds alternativos */
+
+  /* Colores Funcionales */
+  --color-success: #22c55e;             /* Verde - Ingresos, acciones positivas */
+  --color-danger: #ef4444;              /* Rojo - Egresos, errores */
+  --color-warning: #f59e0b;             /* Ámbar - Advertencias */
+  --color-info: #3b82f6;                /* Azul - Información */
+
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 2.5rem;
+  --spacing-3xl: 3rem;
+
+  /* Bordes y Radios */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-2xl: 1.5rem;
+  --border-width: 1px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+  /* Tipografía */
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Transiciones */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-base: 0.2s ease-in-out;
+  --transition-slow: 0.3s ease-in-out;
+
+  /* Z-index */
+  --z-dropdown: 40;
+  --z-modal: 50;
+  --z-navbar: 10;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 2: RESETS Y UTILIDADES GLOBALES
+   Normalización de estilos y helpers reutilizables
+   ──────────────────────────────────────────────────────────── */
+
+/* Reset de márgenes por defecto */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* Font smoothing para mejor legibilidad */
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-gray-dark);
+  background-color: var(--color-bg-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Estilos para links */
+a {
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+a:hover {
+  color: var(--color-primary-mid);
+}
+
+/* Estilos para focus (accesibilidad) */
+button:focus,
+input:focus,
+a:focus {
+  outline: 2px solid var(--color-primary-pale);
+  outline-offset: 2px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 3: COMPONENTES REUTILIZABLES
+   Cards, botones, inputs y otros elementos comunes
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Cards Base ── */
+.card {
+  background-color: var(--color-bg-card);
+  border: var(--border-width) solid var(--color-primary-pale);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.card.compact {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+}
+
+/* ── Botones Base ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+/* Variante Primaria */
+.btn-primary {
+  background-color: var(--color-primary-dark);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-mid);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Variante Secundaria */
+.btn-secondary {
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary-dark);
+  border: var(--border-width) solid var(--color-primary-pale);
+}
+
+.btn-secondary:hover {
+  background-color: #d0d5eb;
+  border-color: #c5cce0;
+}
+
+/* Variante Éxito */
+.btn-success {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #16a34a;
+}
+
+/* Variante Peligro */
+.btn-danger {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
+/* Variante Pequeña */
+.btn-sm {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-xs);
+}
+
+/* Variante Grande */
+.btn-lg {
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-size: var(--font-size-base);
+}
+
+/* ── Inputs Base ── */
+.input {
+  width: 100%;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  border: var(--border-width) solid #d1d5db;
+  border-radius: var(--radius-md);
+  background-color: white;
+  color: var(--color-gray-dark);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.input:focus {
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-gray-mid);
+}
+
+/* ── Labels ── */
+.label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary-dark);
+}
+
+.badge.success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge.danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badge.warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 4: COMPONENTES DEL LAYOUT
+   Navbar, Sidebar, Main content area
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Sidebar Links ── */
+.sidebar-link {
+  display: block;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  color: white;
+  transition: background-color var(--transition-base);
+}
+
+.sidebar-link:hover {
+  background-color: var(--color-primary-mid);
+}
+
+.sidebar-link.active {
+  background-color: var(--color-primary-mid);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 5: ESTADOS INTERACTIVOS
+   Hover, focus, disabled, loading
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Disabled State ── */
+button:disabled,
+input:disabled,
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Loading State ── */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ── Fade In Animation ── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-base);
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 6: GRID Y LAYOUT
+   Sistema de grillas y distribuciones comunes
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Grid de Cards ── */
+.grid-auto {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* ── Flexbox Utilities ── */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-gap {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 7: RESPONSIVE DESIGN
+   Media queries para diferentes tamaños de pantalla
+   ──────────────────────────────────────────────────────────── */
+
+/* Tablets (768px y arriba) */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 12rem;
+    padding: var(--spacing-md);
+  }
+
+  .main-content {
+    padding: var(--spacing-md);
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Móviles (640px y abajo) */
+@media (max-width: 640px) {
+  .sidebar {
+    display: none;
+  }
+
+  .navbar-content {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  .main-content {
+    padding: var(--spacing-md);
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .card {
+    padding: var(--spacing-md);
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .flex-gap {
+    flex-direction: column;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 8: UTILIDADES Y HELPERS
+   Clases reutilizables para casos comunes
+   ──────────────────────────────────────────────────────────── */
+
+/* Spacing */
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.px-md { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
+.py-md { padding-top: var(--spacing-md); padding-bottom: var(--spacing-md); }
+
+/* Text */
+.text-center { text-align: center; }
+.text-muted { color: var(--color-gray-mid); }
+.text-primary { color: var(--color-primary-dark); }
+.font-bold { font-weight: var(--font-weight-bold); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-medium { font-weight: var(--font-weight-medium); }
+
+/* Display */
+.hidden { display: none !important; }
+.block { display: block; }
+.inline-block { display: inline-block; }
+.flex { display: flex; }
+.grid { display: grid; }
+
+/* Opacity */
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+
+/* Cursor */
+.cursor-pointer { cursor: pointer; }
+.cursor-not-allowed { cursor: not-allowed; }
+
+/* ════════════════════════════════════════════════════════════
+   FIN DEL ARCHIVO
+   Última actualización: 2026-07-13
+   ════════════════════════════════════════════════════════════ */
