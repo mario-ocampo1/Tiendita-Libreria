@@ -36,11 +36,14 @@ export default function DashboardLayout({
         {/* Sidebar - Menu lateral */}
         <aside className="w-56 bg-[#1a237e] text-white overflow-y-auto">
           <nav className="p-4 space-y-2">
-            <a href="/dashboard" className="sidebar-link active">
+            <a href="/dashboard" className="sidebar-link">
               Resumen
             </a>
             <a href="/dashboard/caja" className="sidebar-link">
               Caja del día
+            </a>
+            <a href="/dashboard/metricas" className="sidebar-link">
+              Métricas
             </a>
           </nav>
 
