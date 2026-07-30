@@ -1,66 +1,100 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { usePathname } from 'next/navigation';
 import UserMenu from './components/UserMenu';
 import SyncIndicator from './components/SyncIndicator';
 import './dashboard.css';
 
-export const metadata: Metadata = {
-  title: 'Dashboard | Con-Texto POS',
-  description: 'Dashboard de ventas y gestión',
-};
+const NAV_ITEMS = [
+  { href: '/dashboard',          label: 'Resumen',   icon: '' },
+  { href: '/dashboard/caja',     label: 'Caja',      icon: '' },
+  { href: '/dashboard/metricas', label: 'Métricas',  icon: '' },
+  { href: '/dashboard/productos',label: 'Productos', icon: '' },
+];
 
-export default function DashboardLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  function isActive(href: string) {
+    if (href === '/dashboard') return pathname === '/dashboard';
+    return pathname.startsWith(href);
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAF8]">
-      {/* Navbar */}
-      <nav className="bg-[#FAFAF8] border-b border-gray-300 shadow-sm">
-        <div className="max-w-full mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img src="/Logo.jpeg" alt="Con-Texto POS Logo" className="h-10 w-10" />
-              <h1 className="text-lg font-semibold text-[#1a237e]">Con-Texto Chacras</h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <SyncIndicator />
-              <UserMenu />
-            </div>
-          </div>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--md-background)' }}>
+
+      {/* ── Top App Bar ── */}
+      <header className="md-top-bar">
+        {/* Logo + Título */}
+        <img src="/Logo.jpeg" alt="Con-Texto POS" style={{ height: 36, width: 36, borderRadius: 8, flexShrink: 0 }} />
+        <span className="md-top-bar-title">Con-Texto Chacras</span>
+
+        {/* Acciones */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <SyncIndicator />
+          <UserMenu />
         </div>
-      </nav>
+      </header>
 
-      {/* Layout de dos columnas */}
-      <div className="flex flex-1">
-        {/* Sidebar - Menu lateral */}
-        <aside className="w-56 bg-[#1a237e] text-white overflow-y-auto">
-          <nav className="p-4 space-y-2">
-            <a href="/dashboard" className="sidebar-link">
-              Resumen
-            </a>
-            <a href="/dashboard/caja" className="sidebar-link">
-              Caja del día
-            </a>
-            <a href="/dashboard/metricas" className="sidebar-link">
-              Métricas
-            </a>
-          </nav>
+      {/* ── Body con Drawer + Contenido ── */}
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
-          <div className="border-t border-[#283593] mx-4 my-4" />
+        {/* Navigation Drawer (Desktop) */}
+        <nav className="md-nav-drawer">
+          <p className="md-nav-section-label">Operaciones</p>
 
-          <nav className="p-4 space-y-2">
-            <a href="/dashboard/productos" className="sidebar-link">
-              Productos
+          {NAV_ITEMS.slice(0, 2).map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className={`md-nav-item ${isActive(item.href) ? 'active' : ''}`}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              {item.label}
             </a>
-          </nav>
-        </aside>
+          ))}
+
+          <div className="md-nav-divider" />
+          <p className="md-nav-section-label">Análisis</p>
+
+          {NAV_ITEMS.slice(2).map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className={`md-nav-item ${isActive(item.href) ? 'active' : ''}`}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              {item.label}
+            </a>
+          ))}
+        </nav>
 
         {/* Contenido principal */}
-        <main className="flex-1 overflow-y-auto bg-[#FAFAF8] p-6">
+        <main
+          className="md-main-content"
+          style={{ flex: 1, overflowY: 'auto', padding: '24px', background: 'var(--md-background)' }}
+        >
           {children}
         </main>
       </div>
+
+      {/* ── Bottom Navigation Bar (Móvil) ── */}
+      <div className="md-bottom-nav">
+        <div className="md-bottom-nav-inner">
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className={`md-bottom-nav-item ${isActive(item.href) ? 'active' : ''}`}
+            >
+              <span className="bn-indicator">{item.icon}</span>
+              <span className="bn-label">{item.label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }
+

@@ -70,7 +70,7 @@ export default function MetricasClient({
           onClick={() => setMostrarBuscadorPrecios(true)}
           className="flex items-center justify-center gap-2 bg-[#1a237e] text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-900 transition-colors shadow-sm"
         >
-          🔍 Consulta Rápida de Precios
+          Consulta Rápida de Precios
         </button>
       </div>
 
@@ -106,7 +106,7 @@ export default function MetricasClient({
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
-            🔥 Productos con Mayor Salida
+            Productos con Mayor Salida
           </button>
           <button
             onClick={() => setTabActiva('reposicion')}
@@ -116,7 +116,7 @@ export default function MetricasClient({
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
-            📦 Frecuencia de Reposición Sugerida
+            Frecuencia de Reposición Sugerida
           </button>
         </div>
 
@@ -215,10 +215,10 @@ export default function MetricasClient({
                             }`}
                           >
                             {urgencia === 'alta'
-                              ? '🚨 Alta (Comprar ya)'
+                              ? 'Alta — Comprar ya'
                               : urgencia === 'media'
-                              ? '⚠️ Media (Próxima compra)'
-                              : '✅ Normal'}
+                              ? 'Media — Próxima compra'
+                              : 'Normal'}
                           </span>
                         </td>
                       </tr>
@@ -236,7 +236,7 @@ export default function MetricasClient({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-[#FFFBF0] rounded-2xl p-6 w-full max-w-lg shadow-xl border border-[#e8eaf6]">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-[#1a237e]">🔍 Consulta Rápida de Precio</h3>
+              <h3 className="text-xl font-bold text-[#1a237e]">Consulta Rápida de Precio</h3>
               <button
                 onClick={() => {
                   setMostrarBuscadorPrecios(false);
@@ -245,7 +245,7 @@ export default function MetricasClient({
                 }}
                 className="text-gray-400 hover:text-gray-600 text-xl font-bold"
               >
-                ✕
+                ×
               </button>
             </div>
 
