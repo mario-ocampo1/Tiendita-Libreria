@@ -6,6 +6,8 @@ import PaymentMethods from './components/PaymentMethods';
 import AttentionRequired from './components/AttentionRequired';
 import QuickAccess from './components/QuickAccess';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const supabase = await createClient();
 
@@ -17,19 +19,37 @@ export default async function DashboardPage() {
 
   const dashboardData = await getAllDashboardData();
 
+  const fechaHoyFormatted = new Date().toLocaleDateString('es-AR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+
   return (
     <div className="space-y-6">
       {/* Encabezado */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-[#1a237e]">Resumen del día</h1>
-          <p className="text-gray-600 mt-1">
-            Lunes 6 de julio · un vistazo a tu comercio
+          <p className="text-gray-600 mt-1 capitalize">
+            {fechaHoyFormatted} · un vistazo a tu comercio
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-[#e8eaf6] border border-[#d0d5eb] rounded-full px-4 py-2">
-          <span className="w-2 h-2 bg-[#1a237e] rounded-full" />
-          <span className="text-sm font-medium text-[#1a237e]">Caja abierta</span>
+        <div
+          className={`flex items-center gap-2 border rounded-full px-4 py-2 ${
+            dashboardData.isCajaOpen
+              ? 'bg-[#e8eaf6] border-[#d0d5eb] text-[#1a237e]'
+              : 'bg-gray-100 border-gray-300 text-gray-600'
+          }`}
+        >
+          <span
+            className={`w-2 h-2 rounded-full ${
+              dashboardData.isCajaOpen ? 'bg-[#1a237e]' : 'bg-gray-400'
+            }`}
+          />
+          <span className="text-sm font-medium">
+            {dashboardData.isCajaOpen ? 'Caja abierta' : 'Caja cerrada'}
+          </span>
         </div>
       </div>
 

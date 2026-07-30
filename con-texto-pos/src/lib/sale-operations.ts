@@ -16,7 +16,16 @@ export async function registrarVentaOfflineFirst(venta: Omit<PendingSale, 'local
   // 1. Guardar local inmediatamente
   await localDb.pendingSales.add(pendingSale);
 
-  // 2. Intentar sincronizar ya mismo
+  // 2. Descontar stock localmente en Dexie
+  for (const item of venta.items) {
+    const prod = await localDb.products.get(item.product_id);
+    if (prod) {
+      const nuevoStock = Math.max(0, prod.stock_actual - item.cantidad);
+      await localDb.products.update(item.product_id, { stock_actual: nuevoStock });
+    }
+  }
+
+  // 3. Intentar sincronizar ya mismo (el RPC registrar_venta en Supabase descuenta el stock en BD remota)
   await pushVentaToSupabase(pendingSale);
 
   return pendingSale;
@@ -111,3 +120,44 @@ export async function buscarProducto(codigoBarras: string) {
   await localDb.products.put(data);
   return data;
 }
+
+/**
+ * Busca productos por nombre o código de barras (coincidencia parcial)
+ */
+export async function buscarProductosPorCoincidencia(query: string) {
+  if (!query.trim()) return [];
+
+  const q = query.trim().toLowerCase();
+
+  // 1. Buscar coincidencia localmente en Dexie
+  const locales = await localDb.products
+    .filter((p) => (p.nombre && p.nombre.toLowerCase().includes(q)) || (p.codigo_barras && p.codigo_barras.toLowerCase().includes(q)))
+    .toArray();
+
+  if (locales.length > 0) return locales.slice(0, 10);
+
+  // 2. Si no hay locales o faltan, consultar Supabase si hay conexión
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return locales;
+  }
+
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('productos')
+      .select('id, codigo_barras, nombre, precio_venta, stock_actual, updated_at')
+      .or(`nombre.ilike.%${query.trim()}%,codigo_barras.ilike.%${query.trim()}%`)
+      .eq('activo', true)
+      .limit(10);
+
+    if (error || !data) return locales;
+
+    // Guardar en Dexie los resultados encontrados
+    for (const prod of data) {
+      await localDb.products.put(prod);
+    }
+    return data;
+  } catch {
+    return locales;
+  }
+}

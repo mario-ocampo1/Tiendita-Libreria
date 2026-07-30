@@ -1,77 +1,99 @@
-/* Ocultar el ticket en pantalla normal */
+/* Ocultar el ticket en la pantalla normal */
 .ticket-print {
   display: none;
 }
 
-/* Al imprimir: ocultar TODO excepto el ticket */
+/* Al imprimir */
 @media print {
+  /* Ocultar todos los elementos de la interfaz */
   body * {
-    visibility: hidden;
+    visibility: hidden !important;
   }
+
+  /* Hacer visible únicamente el ticket y sus hijos */
   .ticket-print,
   .ticket-print * {
-    visibility: visible;
+    visibility: visible !important;
   }
-  .no-print {
-    display: none !important;
-  }
+
   .ticket-print {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 80mm; /* ancho estándar de ticket aunque sea en impresora normal */
-    font-family: monospace;
-    font-size: 12px;
-    color: #000;
-    padding: 4mm;
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 80mm !important;
+    margin: 0 !important;
+    padding: 4mm !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 12px !important;
+    color: #000 !important;
+    background-color: #fff !important;
   }
+
+  .no-print,
+  .no-print * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
   .ticket-header {
     text-align: center;
     margin-bottom: 4mm;
   }
+
   .ticket-negocio {
     font-size: 15px;
     font-weight: bold;
   }
+
   .ticket-sub {
     font-size: 11px;
   }
-  .ticket-fecha, .ticket-numero {
+
+  .ticket-fecha,
+  .ticket-numero {
     font-size: 11px;
     margin-top: 2mm;
   }
+
   .ticket-linea {
     border-top: 1px dashed #000;
     margin: 3mm 0;
   }
+
   .ticket-tabla {
     width: 100%;
     border-collapse: collapse;
   }
+
   .ticket-td-nombre {
     width: 55%;
     padding: 1mm 0;
   }
+
   .ticket-td-cant {
     width: 10%;
     text-align: center;
   }
+
   .ticket-td-precio {
     width: 35%;
     text-align: right;
   }
+
   .ticket-fila {
     display: flex;
     justify-content: space-between;
     padding: 1mm 0;
     font-size: 12px;
   }
+
   .ticket-total {
     font-weight: bold;
     font-size: 14px;
     margin: 2mm 0;
   }
+
   .ticket-footer {
     text-align: center;
     margin-top: 4mm;

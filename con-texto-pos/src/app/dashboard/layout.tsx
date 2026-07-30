@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import UserMenu from './components/UserMenu';
+import SyncIndicator from './components/SyncIndicator';
 import './dashboard.css';
 
 export const metadata: Metadata = {
@@ -18,9 +19,14 @@ export default function DashboardLayout({
       <nav className="bg-[#FAFAF8] border-b border-gray-300 shadow-sm">
         <div className="max-w-full mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <img src="/Logo.jpeg" alt="Con-Texto POS Logo" className="h-10 w-10" />
-            <h1 className="text-lg font-semibold text-[#1a237e]">Con-Texto Chacras</h1>
-            <UserMenu />
+            <div className="flex items-center gap-3">
+              <img src="/Logo.jpeg" alt="Con-Texto POS Logo" className="h-10 w-10" />
+              <h1 className="text-lg font-semibold text-[#1a237e]">Con-Texto Chacras</h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <SyncIndicator />
+              <UserMenu />
+            </div>
           </div>
         </div>
       </nav>
@@ -36,9 +42,6 @@ export default function DashboardLayout({
             <a href="/dashboard/caja" className="sidebar-link">
               Caja del día
             </a>
-            <a href="/dashboard/ventas" className="sidebar-link">
-              Ventas del día
-            </a>
           </nav>
 
           <div className="border-t border-[#283593] mx-4 my-4" />
@@ -46,12 +49,6 @@ export default function DashboardLayout({
           <nav className="p-4 space-y-2">
             <a href="/dashboard/productos" className="sidebar-link">
               Productos
-            </a>
-            <a href="/dashboard/stock" className="sidebar-link">
-              Stock y vencimientos
-            </a>
-            <a href="/dashboard/categorias" className="sidebar-link">
-              Categorías
             </a>
           </nav>
         </aside>
