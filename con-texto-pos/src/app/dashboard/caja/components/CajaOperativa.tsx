@@ -1,8 +1,9 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { buscarProducto, registrarVentaOfflineFirst, syncVentasPendientes } from '@/lib/sale-operations';
+import { buscarProducto, buscarProductosPorCoincidencia, registrarVentaOfflineFirst, syncVentasPendientes } from '@/lib/sale-operations';
 import TicketImpresion from './TicketImpresion';
+import CerrarCajaModal from './CerrarCajaModal';
 import './ticket-print.css';
 
 type CartItem = {
@@ -27,7 +28,7 @@ export default function CajaOperativa({
   usuarioId,
   ventasIniciales,
 }: {
-  sesion: { id: string };
+  sesion: { id: string; monto_inicial?: number };
   usuarioId: string;
   ventasIniciales: any[];
 }) {
@@ -36,16 +37,36 @@ export default function CajaOperativa({
   const [metodoPago, setMetodoPago] = useState<'efectivo' | 'tarjeta' | 'transferencia' | 'mercado_pago'>('efectivo');
   const [descuento, setDescuento] = useState(0);
   const [buscando, setBuscando] = useState(false);
+  const [sugerencias, setSugerencias] = useState<any[]>([]);
+  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [procesando, setProcesando] = useState(false);
   const [ultimaVenta, setUltimaVenta] = useState<UltimaVenta | null>(null);
   const [isOnline, setIsOnline] = useState(true);
   const [pendientes, setPendientes] = useState(0);
+  const [mostrarArqueo, setMostrarArqueo] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   const totalCarrito = cart.reduce((acc, i) => acc + i.cantidad * i.precio_unitario, 0);
   const totalAPagar = totalCarrito - descuento;
+
+  // Búsqueda en tiempo real (autocomplete)
+  useEffect(() => {
+    if (!codigo.trim() || codigo.trim().length < 2) {
+      setSugerencias([]);
+      setMostrarSugerencias(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      const resultados = await buscarProductosPorCoincidencia(codigo.trim());
+      setSugerencias(resultados);
+      setMostrarSugerencias(true);
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [codigo]);
 
   // Monitor de conexión
   useEffect(() => {
@@ -68,44 +89,58 @@ export default function CajaOperativa({
     };
   }, [router]);
 
+  function agregarProducto(producto: any) {
+    if (producto.stock_actual <= 0) {
+      setErrorMsg(`"${producto.nombre}" no tiene stock disponible`);
+      return;
+    }
+    setErrorMsg('');
+    setCart((prev) => {
+      const existe = prev.find((i) => i.product_id === producto.id);
+      if (existe) {
+        return prev.map((i) =>
+          i.product_id === producto.id ? { ...i, cantidad: i.cantidad + 1 } : i
+        );
+      }
+      return [
+        ...prev,
+        {
+          product_id: producto.id,
+          nombre: producto.nombre,
+          cantidad: 1,
+          precio_unitario: producto.precio_venta,
+        },
+      ];
+    });
+    setCodigo('');
+    setSugerencias([]);
+    setMostrarSugerencias(false);
+    inputRef.current?.focus();
+  }
+
   async function handleScan(e: React.FormEvent) {
     e.preventDefault();
     if (!codigo.trim()) return;
+
+    // Si hay sugerencias activas, tomar la primera coincidencia exacta o primera sugerencia
+    if (sugerencias.length > 0) {
+      agregarProducto(sugerencias[0]);
+      return;
+    }
+
     setBuscando(true);
     setErrorMsg('');
     try {
       const producto = await buscarProducto(codigo.trim());
       if (!producto) {
-        setErrorMsg(`No se encontró ningún producto con el código "${codigo}"`);
+        setErrorMsg(`No se encontró ningún producto con "${codigo}"`);
         return;
       }
-      if (producto.stock_actual <= 0) {
-        setErrorMsg(`"${producto.nombre}" no tiene stock disponible`);
-        return;
-      }
-      setCart((prev) => {
-        const existe = prev.find((i) => i.product_id === producto.id);
-        if (existe) {
-          return prev.map((i) =>
-            i.product_id === producto.id ? { ...i, cantidad: i.cantidad + 1 } : i
-          );
-        }
-        return [
-          ...prev,
-          {
-            product_id: producto.id,
-            nombre: producto.nombre,
-            cantidad: 1,
-            precio_unitario: producto.precio_venta,
-          },
-        ];
-      });
+      agregarProducto(producto);
     } catch {
       setErrorMsg('Error al buscar el producto');
     } finally {
-      setCodigo('');
       setBuscando(false);
-      inputRef.current?.focus();
     }
   }
 
@@ -125,6 +160,10 @@ export default function CajaOperativa({
 
   async function handleCobrar() {
     if (cart.length === 0) return;
+
+    const confirmado = window.confirm(`¿Estás seguro de que deseas registrar y cobrar esta venta por $${totalAPagar.toFixed(2)}?`);
+    if (!confirmado) return;
+
     setProcesando(true);
     setErrorMsg('');
     try {
@@ -168,33 +207,63 @@ export default function CajaOperativa({
 
   return (
     <div className="space-y-4">
-      {/* Indicador de conexión */}
-      <div className={`flex items-center gap-2 text-sm px-3 py-1.5 rounded-full w-fit ${isOnline ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
-        <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-yellow-500'}`} />
-        {isOnline ? 'En línea' : 'Sin conexión — las ventas se guardan localmente'}
-        {pendientes > 0 && (
-          <span className="ml-2 bg-yellow-200 text-yellow-800 rounded-full px-2 py-0.5 text-xs">
-            {pendientes} pendiente{pendientes > 1 ? 's' : ''}
-          </span>
-        )}
+      {/* Barra superior de estado y acciones */}
+      <div className="flex flex-wrap justify-between items-center gap-4 bg-white p-3 rounded-lg border">
+        <div className={`flex items-center gap-2 text-sm px-3 py-1.5 rounded-full ${isOnline ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
+          <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-yellow-500'}`} />
+          {isOnline ? 'En línea' : 'Sin conexión — las ventas se guardan localmente'}
+          {pendientes > 0 && (
+            <span className="ml-2 bg-yellow-200 text-yellow-800 rounded-full px-2 py-0.5 text-xs">
+              {pendientes} pendiente{pendientes > 1 ? 's' : ''}
+            </span>
+          )}
+        </div>
+
+        <button
+          onClick={() => setMostrarArqueo(true)}
+          className="bg-red-600 hover:bg-red-700 text-white font-medium text-sm px-4 py-2 rounded-md shadow-sm transition"
+        >
+          Realizar Arqueo y Cerrar Caja
+        </button>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
         {/* Columna izquierda: escaneo + carrito */}
         <div className="md:col-span-2 space-y-4">
-          <form onSubmit={handleScan} className="bg-white rounded-lg border p-4">
+          <form onSubmit={handleScan} className="bg-white rounded-lg border p-4 relative">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Escanear código de barras
+              Buscar por nombre o código de barras
             </label>
             <input
               ref={inputRef}
               autoFocus
               value={codigo}
               onChange={(e) => setCodigo(e.target.value)}
+              onFocus={() => { if (sugerencias.length > 0) setMostrarSugerencias(true); }}
               disabled={buscando}
-              className="w-full border rounded px-3 py-2 text-lg"
-              placeholder="Escaneá o tipeá el código..."
+              className="w-full border rounded px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Escribí un nombre o escaneá el código..."
             />
+
+            {/* Lista desplegable de sugerencias */}
+            {mostrarSugerencias && sugerencias.length > 0 && (
+              <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto">
+                {sugerencias.map((prod) => (
+                  <li
+                    key={prod.id}
+                    onClick={() => agregarProducto(prod)}
+                    className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex justify-between items-center border-b last:border-0"
+                  >
+                    <div>
+                      <p className="font-medium text-gray-800">{prod.nombre}</p>
+                      <p className="text-xs text-gray-500">Cód: {prod.codigo_barras || 'N/A'} | Stock: {prod.stock_actual}</p>
+                    </div>
+                    <span className="font-semibold text-blue-600">${prod.precio_venta}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
             {errorMsg && <p className="text-red-600 text-sm mt-2">{errorMsg}</p>}
           </form>
 
@@ -302,6 +371,15 @@ export default function CajaOperativa({
           fecha={ultimaVenta.fecha}
           offline={ultimaVenta.offline}
           onCerrar={() => setUltimaVenta(null)}
+        />
+      )}
+
+      {mostrarArqueo && (
+        <CerrarCajaModal
+          sesionId={sesion.id}
+          montoInicial={sesion.monto_inicial ?? 0}
+          ventas={ventasIniciales}
+          onCerrarModal={() => setMostrarArqueo(false)}
         />
       )}
     </div>

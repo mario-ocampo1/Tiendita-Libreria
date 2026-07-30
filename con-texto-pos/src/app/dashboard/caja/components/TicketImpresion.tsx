@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 
 type Item = { nombre: string; cantidad: number; precio_unitario: number };
 
@@ -33,8 +34,26 @@ export default function TicketImpresion({
   onCerrar 
 }: Props) {
   function imprimir() {
-    window.print();
+    const originalTitle = document.title;
+    // Nombre del archivo PDF (evita el símbolo '#' que los navegadores borran)
+    document.title = numeroTicket ? `Ticket-${numeroTicket}` : 'Ticket-de-Venta';
+
+    const restaurarTitulo = () => {
+      document.title = originalTitle;
+      window.removeEventListener('afterprint', restaurarTitulo);
+    };
+
+    window.addEventListener('afterprint', restaurarTitulo);
+
+    setTimeout(() => {
+      window.print();
+    }, 100);
   }
+
+  // Disparar la impresión automáticamente al registrar la venta
+  useEffect(() => {
+    imprimir();
+  }, []);
 
   return (
     <>
