@@ -4,7 +4,6 @@ import { getAllDashboardData } from '@/lib/supabase-queries';
 import DailySummary from './components/DailySummary';
 import PaymentMethods from './components/PaymentMethods';
 import AttentionRequired from './components/AttentionRequired';
-import QuickAccess from './components/QuickAccess';
 
 export const dynamic = 'force-dynamic';
 
@@ -72,10 +71,9 @@ export default async function DashboardPage() {
           />
         </div>
 
-        {/* Columna derecha - Atención requerida y accesos rápidos */}
+        {/* Columna derecha - Atención requerida */}
         <div className="lg:col-span-2 space-y-6">
           <AttentionRequired alerts={dashboardData.alerts} />
-          <QuickAccess />
         </div>
       </div>
     </div>
