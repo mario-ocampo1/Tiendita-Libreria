@@ -131,7 +131,7 @@ export async function buscarProductosPorCoincidencia(query: string) {
 
   // 1. Buscar coincidencia localmente en Dexie
   const locales = await localDb.products
-    .filter((p) => (p.nombre && p.nombre.toLowerCase().includes(q)) || (p.codigo_barras && p.codigo_barras.toLowerCase().includes(q)))
+    .filter((p) => Boolean((p.nombre && p.nombre.toLowerCase().includes(q)) || (p.codigo_barras && p.codigo_barras.toLowerCase().includes(q))))
     .toArray();
 
   if (locales.length > 0) return locales.slice(0, 10);
