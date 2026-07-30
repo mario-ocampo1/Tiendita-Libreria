@@ -28,7 +28,7 @@ export default function CajaOperativa({
   usuarioId,
   ventasIniciales,
 }: {
-  sesion: { id: string };
+  sesion: { id: string; monto_inicial?: number };
   usuarioId: string;
   ventasIniciales: any[];
 }) {
