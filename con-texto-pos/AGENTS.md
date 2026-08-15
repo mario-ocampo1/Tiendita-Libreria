@@ -34,4 +34,8 @@ Estas reglas son **OBLIGATORIAS** para todo el código generado en este proyecto
 - Extraer valores mágicos a constantes nombradas.
 - La lógica de negocio va en hooks o servicios, nunca directamente en componentes de UI.
 - Preferir composición sobre herencia.
+
+## 6. Gestor de Paquetes
+- El proyecto utiliza **pnpm** como gestor de paquetes exclusivo.
+- Usar siempre `pnpm install`, `pnpm run dev`, `pnpm add <pkg>`, etc. Prohibido usar `npm` o `yarn`.
 <!-- END:con-texto-pos-code-standards -->
