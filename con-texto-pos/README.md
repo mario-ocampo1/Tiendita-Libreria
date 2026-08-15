@@ -20,22 +20,16 @@ Sistema integral de gestión de punto de venta (POS) con dashboard analítico, a
 
 ```bash
 # Instala las dependencias
-npm install
+pnpm install
 ```
 
 ### 2. Ejecutar en Desarrollo
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
-
-### 3. Flujo de Uso
-
-1. **Acceso**: Dirígete a `/auth/login` para ingresar
-2. **Dashboard**: Una vez autenticado, verás automáticamente el dashboard principal
-3. **Navegación**: Usa el menú lateral para acceder a diferentes secciones
 
 ---
 
@@ -109,6 +103,7 @@ src/
 
 - **Framework**: [Next.js](https://nextjs.org) (App Router)
 - **Lenguaje**: TypeScript (estricto)
+- **Gestor de paquetes**: pnpm
 - **Estilos**: Tailwind CSS
 - **Iconos**: Heroicons
 - **Base de Datos**: Supabase
@@ -168,19 +163,19 @@ Consulta [AGENTS.md](./AGENTS.md) para más detalles.
 
 ```bash
 # Instalar dependencias
-npm install
+pnpm install
 
 # Ejecutar servidor de desarrollo
-npm run dev
+pnpm run dev
 
 # Construir para producción
-npm run build
+pnpm run build
 
 # Ejecutar en producción
-npm start
+pnpm start
 
 # Linting y formato
-npm run lint
+pnpm run lint
 ```
 
 ---

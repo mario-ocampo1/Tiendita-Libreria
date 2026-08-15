@@ -121,10 +121,10 @@ Actualmente, el dashboard muestra datos de ejemplo. Para conectarlo con datos re
 
 ```bash
 # Instalar dependencias
-npm install
+pnpm install
 
 # Ejecutar en desarrollo
-npm run dev
+pnpm run dev
 
 # Visitar en navegador
 http://localhost:3000/

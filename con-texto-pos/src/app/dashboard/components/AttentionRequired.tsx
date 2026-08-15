@@ -31,7 +31,7 @@ export default function AttentionRequired({ alerts }: AttentionRequiredProps) {
 
       {alerts.length === 0 ? (
         <p className="text-gray-500 text-center py-6">
-          ✅ Todo en orden, no hay alertas.
+          Todo en orden, no hay alertas.
         </p>
       ) : (
         <div className="space-y-3">

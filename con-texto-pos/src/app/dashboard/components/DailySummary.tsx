@@ -14,34 +14,57 @@ export default function DailySummary({
   profitMargin,
 }: DailySummaryProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      {/* Ventas del día */}
-      <div className="bg-[#1a237e] text-white rounded-2xl p-6">
-        <p className="text-sm opacity-90 mb-2">Ventas del día</p>
-        <p className="text-3xl font-bold">${totalSales.toFixed(2)}</p>
-        <p className="text-xs opacity-75 mt-2">{confirmedSales} ventas cobradas</p>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24 }}>
+
+      {/* Ventas del día — Filled Primary Card */}
+      <div className="md-card-primary">
+        <p style={{ fontSize: 'var(--md-label-large)', opacity: 0.85, marginBottom: 8 }}>Ventas del día</p>
+        <p style={{ fontSize: 'var(--md-headline-medium)', fontWeight: 700, lineHeight: 1.1 }}>
+          ${totalSales.toFixed(2)}
+        </p>
+        <p style={{ fontSize: 'var(--md-body-small)', opacity: 0.75, marginTop: 8 }}>
+          {confirmedSales} ventas cobradas
+        </p>
       </div>
 
-      {/* Ventas realizadas */}
-      <div className="bg-[#FFFBF0] border border-[#e8eaf6] rounded-2xl p-6">
-        <p className="text-sm text-gray-600 mb-2">Ventas realizadas</p>
-        <p className="text-3xl font-bold text-[#1a237e]">{confirmedSales}</p>
-        <p className="text-xs text-gray-500 mt-2">confirmadas hoy</p>
+      {/* Ventas realizadas — Elevated Card */}
+      <div className="md-card" style={{ borderRadius: 'var(--md-shape-extra-large)' }}>
+        <p style={{ fontSize: 'var(--md-label-large)', color: 'var(--md-on-surface-variant)', marginBottom: 8 }}>
+          Ventas realizadas
+        </p>
+        <p style={{ fontSize: 'var(--md-headline-medium)', fontWeight: 700, color: 'var(--md-primary)' }}>
+          {confirmedSales}
+        </p>
+        <p style={{ fontSize: 'var(--md-body-small)', color: 'var(--md-on-surface-variant)', marginTop: 8 }}>
+          confirmadas hoy
+        </p>
       </div>
 
-      {/* Ticket promedio */}
-      <div className="bg-[#FFFBF0] border border-[#e8eaf6] rounded-2xl p-6">
-        <p className="text-sm text-gray-600 mb-2">Ticket promedio</p>
-        <p className="text-3xl font-bold text-[#1a237e]">${averageTicket.toFixed(2)}</p>
-        <p className="text-xs text-gray-500 mt-2">por venta pagada</p>
+      {/* Ticket promedio — Elevated Card */}
+      <div className="md-card" style={{ borderRadius: 'var(--md-shape-extra-large)' }}>
+        <p style={{ fontSize: 'var(--md-label-large)', color: 'var(--md-on-surface-variant)', marginBottom: 8 }}>
+          Ticket promedio
+        </p>
+        <p style={{ fontSize: 'var(--md-headline-medium)', fontWeight: 700, color: 'var(--md-primary)' }}>
+          ${averageTicket.toFixed(2)}
+        </p>
+        <p style={{ fontSize: 'var(--md-body-small)', color: 'var(--md-on-surface-variant)', marginTop: 8 }}>
+          por venta pagada
+        </p>
       </div>
 
-      {/* Ganancia estimada */}
-      <div className="bg-[#FFFBF0] border border-[#e8eaf6] rounded-2xl p-6">
-        <p className="text-sm text-gray-600 mb-2">Ganancia estimada</p>
-        <p className="text-3xl font-bold text-[#1a237e]">${estimatedProfit.toFixed(2)}</p>
-        <p className="text-xs text-gray-500 mt-2">margen aprox. {profitMargin}%</p>
+      {/* Ganancia estimada — Container Card */}
+      <div className="md-card-container" style={{ borderRadius: 'var(--md-shape-extra-large)' }}>
+        <p style={{ fontSize: 'var(--md-label-large)', opacity: 0.8, marginBottom: 8 }}>Ganancia estimada</p>
+        <p style={{ fontSize: 'var(--md-headline-medium)', fontWeight: 700 }}>
+          ${estimatedProfit.toFixed(2)}
+        </p>
+        <p style={{ fontSize: 'var(--md-body-small)', opacity: 0.75, marginTop: 8 }}>
+          margen aprox. {profitMargin}%
+        </p>
       </div>
+
     </div>
   );
 }
+

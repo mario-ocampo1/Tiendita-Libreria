@@ -9,46 +9,67 @@ interface PaymentMethodsProps {
   totalCollected: number;
 }
 
-export default function PaymentMethods({
-  methods,
-  totalCollected,
-}: PaymentMethodsProps) {
+export default function PaymentMethods({ methods, totalCollected }: PaymentMethodsProps) {
   return (
-    <div className="bg-[#FFFBF0] rounded-2xl p-6 border border-[#e8eaf6]">
-      <h2 className="text-xl font-semibold text-[#1a237e] mb-6">
+    <div className="md-card-outlined" style={{ borderRadius: 'var(--md-shape-extra-large)' }}>
+      <h2 style={{ fontSize: 'var(--md-title-large)', fontWeight: 600, color: 'var(--md-on-surface)', marginBottom: 20 }}>
         Cobros por medio de pago
       </h2>
 
       {methods.length === 0 ? (
-        <p className="text-gray-500 text-center py-8">
+        <p style={{ color: 'var(--md-on-surface-variant)', textAlign: 'center', padding: '24px 0', fontSize: 'var(--md-body-medium)' }}>
           Sin ventas registradas hoy.
         </p>
       ) : (
-        <div className="space-y-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {methods.map((method) => (
             <div
               key={method.name}
-              className="flex items-center justify-between p-3 bg-[#e8eaf6] rounded-lg"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 16px',
+                background: 'var(--md-surface-container)',
+                borderRadius: 'var(--md-shape-small)',
+              }}
             >
               <div>
-                <p className="font-medium text-[#1a237e]">{method.name}</p>
-                <p className="text-sm text-gray-500">
+                <p style={{ fontWeight: 500, color: 'var(--md-on-surface)', fontSize: 'var(--md-body-large)' }}>
+                  {method.name}
+                </p>
+                <p style={{ fontSize: 'var(--md-body-small)', color: 'var(--md-on-surface-variant)' }}>
                   {method.count} transacción{method.count !== 1 ? 'es' : ''}
                 </p>
               </div>
-              <p className="text-lg font-semibold text-blue-900">
+              <p style={{ fontWeight: 600, fontSize: 'var(--md-title-medium)', color: 'var(--md-primary)' }}>
                 ${method.amount.toFixed(2)}
               </p>
             </div>
           ))}
 
           {/* Total */}
-          <div className="flex items-center justify-between p-3 bg-[#e8eaf6] rounded-lg font-semibold">
-            <p>Total cobrado</p>
-            <p className="text-[#1a237e]">${totalCollected.toFixed(2)}</p>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '14px 16px',
+              background: 'var(--md-primary-container)',
+              borderRadius: 'var(--md-shape-small)',
+              marginTop: 4,
+            }}
+          >
+            <p style={{ fontWeight: 700, color: 'var(--md-on-primary-container)', fontSize: 'var(--md-body-large)' }}>
+              Total cobrado
+            </p>
+            <p style={{ fontWeight: 700, color: 'var(--md-on-primary-container)', fontSize: 'var(--md-title-medium)' }}>
+              ${totalCollected.toFixed(2)}
+            </p>
           </div>
         </div>
       )}
     </div>
   );
 }
+

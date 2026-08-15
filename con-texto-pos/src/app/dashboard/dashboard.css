@@ -1,17 +1,658 @@
 /* ============================================================
-   ESTILOS GLOBALES DEL DASHBOARD — Con-Texto POS
-   
-   Este archivo centraliza todos los estilos reutilizables
-   del dashboard. Basado en la colorimetría del logo y 
-   la página de autenticación.
-   
-   Estructura:
-   1. Variables de diseño
-   2. Resets y utilidades
-   3. Componentes reutilizables
-   4. Estados interactivos
-   5. Responsive design
+   MATERIAL DESIGN 3 — Con-Texto POS Dashboard
+   Tokens de color, elevaciones, tipografía y componentes M3
    ============================================================ */
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 1: TOKENS DE COLOR M3
+   Basados en el esquema Tonal Palette con azul marino primario
+   ──────────────────────────────────────────────────────────── */
+
+:root {
+  /* Primary (azul marino corporativo) */
+  --md-primary:             #1a237e;
+  --md-on-primary:          #ffffff;
+  --md-primary-container:   #dde1ff;
+  --md-on-primary-container: #00105c;
+
+  /* Secondary */
+  --md-secondary:           #5c5f72;
+  --md-on-secondary:        #ffffff;
+  --md-secondary-container: #e1e0f9;
+  --md-on-secondary-container: #191a2c;
+
+  /* Tertiary */
+  --md-tertiary:            #78536a;
+  --md-on-tertiary:         #ffffff;
+  --md-tertiary-container:  #ffd8ef;
+  --md-on-tertiary-container: #2e1126;
+
+  /* Error */
+  --md-error:               #ba1a1a;
+  --md-on-error:            #ffffff;
+  --md-error-container:     #ffdad6;
+  --md-on-error-container:  #410002;
+
+  /* Surface / Background */
+  --md-background:          #fffbfe;
+  --md-on-background:       #1c1b1f;
+  --md-surface:             #fffbfe;
+  --md-on-surface:          #1c1b1f;
+  --md-surface-variant:     #e4e1ec;
+  --md-on-surface-variant:  #47464f;
+
+  /* Surface containers (elevaciones) */
+  --md-surface-container-lowest:  #ffffff;
+  --md-surface-container-low:     #f7f2fa;
+  --md-surface-container:         #f1ecf4;
+  --md-surface-container-high:    #ece6ef;
+  --md-surface-container-highest: #e6e1e5;
+
+  /* Outline */
+  --md-outline:             #787680;
+  --md-outline-variant:     #cac4d0;
+
+  /* Success (no nativo M3, color semántico propio) */
+  --md-success:             #2d6a4f;
+  --md-success-container:   #d8f3dc;
+  --md-on-success-container: #1b4332;
+  --md-warning:             #e98e00;
+  --md-warning-container:   #ffecd4;
+
+  /* Tipografía M3 */
+  --md-font:                'Roboto', system-ui, sans-serif;
+  --md-mono:                'Roboto Mono', monospace;
+
+  /* Escala tipográfica M3 */
+  --md-display-large:    57px;
+  --md-display-medium:   45px;
+  --md-display-small:    36px;
+  --md-headline-large:   32px;
+  --md-headline-medium:  28px;
+  --md-headline-small:   24px;
+  --md-title-large:      22px;
+  --md-title-medium:     16px;
+  --md-title-small:      14px;
+  --md-body-large:       16px;
+  --md-body-medium:      14px;
+  --md-body-small:       12px;
+  --md-label-large:      14px;
+  --md-label-medium:     12px;
+  --md-label-small:      11px;
+
+  /* Elevaciones M3 (box-shadow por nivel) */
+  --md-elevation-0: none;
+  --md-elevation-1: 0px 1px 2px rgba(0,0,0,0.3), 0px 1px 3px 1px rgba(0,0,0,0.15);
+  --md-elevation-2: 0px 1px 2px rgba(0,0,0,0.3), 0px 2px 6px 2px rgba(0,0,0,0.15);
+  --md-elevation-3: 0px 1px 3px rgba(0,0,0,0.3), 0px 4px 8px 3px rgba(0,0,0,0.15);
+  --md-elevation-4: 0px 2px 3px rgba(0,0,0,0.3), 0px 6px 10px 4px rgba(0,0,0,0.15);
+  --md-elevation-5: 0px 4px 4px rgba(0,0,0,0.3), 0px 8px 12px 6px rgba(0,0,0,0.15);
+
+  /* Shape M3 */
+  --md-shape-none:        0px;
+  --md-shape-extra-small: 4px;
+  --md-shape-small:       8px;
+  --md-shape-medium:      12px;
+  --md-shape-large:       16px;
+  --md-shape-extra-large: 28px;
+  --md-shape-full:        9999px;
+
+  /* Motion M3 */
+  --md-motion-standard:   cubic-bezier(0.2, 0, 0, 1);
+  --md-motion-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-duration-short2:   100ms;
+  --md-duration-short4:   200ms;
+  --md-duration-medium2:  300ms;
+  --md-duration-long2:    500ms;
+
+  /* Layout */
+  --md-navbar-height:     64px;
+  --md-bottom-nav-height: 80px;
+  --md-sidebar-width:     260px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 2: RESETS GLOBALES
+   ──────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body,h1,h2,h3,h4,h5,h6,p,ul,ol { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--md-font);
+  font-size: var(--md-body-large);
+  background-color: var(--md-background);
+  color: var(--md-on-background);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: var(--md-font); cursor: pointer; border: none; background: none; }
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 3: RIPPLE EFFECT (animación interactiva M3)
+   ──────────────────────────────────────────────────────────── */
+
+@keyframes md-ripple {
+  0%   { transform: scale(0); opacity: 0.35; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.md-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.md-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity var(--md-duration-short2) linear;
+}
+
+.md-ripple:hover::after  { opacity: 0.08; }
+.md-ripple:active::after { opacity: 0.12; }
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 4: CARDS M3
+   ──────────────────────────────────────────────────────────── */
+
+/* Elevated Card */
+.md-card {
+  background-color: var(--md-surface-container-low);
+  border-radius: var(--md-shape-medium);
+  box-shadow: var(--md-elevation-1);
+  padding: 1.25rem;
+  transition: box-shadow var(--md-duration-short4) var(--md-motion-standard);
+}
+
+.md-card:hover {
+  box-shadow: var(--md-elevation-2);
+}
+
+/* Filled Card */
+.md-card-filled {
+  background-color: var(--md-surface-container-highest);
+  border-radius: var(--md-shape-medium);
+  padding: 1.25rem;
+}
+
+/* Outlined Card */
+.md-card-outlined {
+  background-color: var(--md-surface);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--md-shape-medium);
+  padding: 1.25rem;
+}
+
+/* Surface Container Card (hero/destacado) */
+.md-card-primary {
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+  border-radius: var(--md-shape-extra-large);
+  padding: 1.5rem;
+  box-shadow: var(--md-elevation-2);
+}
+
+.md-card-container {
+  background-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border-radius: var(--md-shape-extra-large);
+  padding: 1.5rem;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 5: BOTONES M3
+   ──────────────────────────────────────────────────────────── */
+
+.md-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--md-font);
+  font-size: var(--md-label-large);
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  border-radius: var(--md-shape-full);
+  padding: 10px 24px;
+  min-height: 40px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    box-shadow var(--md-duration-short4) var(--md-motion-standard),
+    background-color var(--md-duration-short4) var(--md-motion-standard);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.md-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity var(--md-duration-short2) linear;
+  pointer-events: none;
+}
+.md-btn:hover::after  { opacity: 0.08; }
+.md-btn:active::after { opacity: 0.12; }
+.md-btn:disabled      { opacity: 0.38; cursor: not-allowed; pointer-events: none; }
+
+/* Filled */
+.md-btn-filled {
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+  box-shadow: var(--md-elevation-0);
+}
+.md-btn-filled:hover { box-shadow: var(--md-elevation-1); }
+
+/* Filled Tonal */
+.md-btn-tonal {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+.md-btn-tonal:hover { box-shadow: var(--md-elevation-1); }
+
+/* Outlined */
+.md-btn-outlined {
+  background-color: transparent;
+  color: var(--md-primary);
+  border: 1px solid var(--md-outline);
+}
+
+/* Text */
+.md-btn-text {
+  background-color: transparent;
+  color: var(--md-primary);
+  padding: 10px 12px;
+}
+
+/* Danger filled */
+.md-btn-danger {
+  background-color: var(--md-error);
+  color: var(--md-on-error);
+}
+.md-btn-danger:hover { box-shadow: var(--md-elevation-1); }
+
+/* Success filled */
+.md-btn-success {
+  background-color: var(--md-success);
+  color: #ffffff;
+}
+.md-btn-success:hover { box-shadow: var(--md-elevation-1); }
+
+/* FAB (Floating Action Button) */
+.md-fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--md-shape-large);
+  background-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  box-shadow: var(--md-elevation-3);
+  cursor: pointer;
+  font-size: 24px;
+  border: none;
+  transition: box-shadow var(--md-duration-short4) var(--md-motion-standard);
+  position: relative;
+  overflow: hidden;
+}
+.md-fab:hover  { box-shadow: var(--md-elevation-4); }
+.md-fab:active { box-shadow: var(--md-elevation-3); }
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 6: INPUTS M3 (Outlined Text Field)
+   ──────────────────────────────────────────────────────────── */
+
+.md-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: var(--md-font);
+  font-size: var(--md-body-large);
+  background-color: var(--md-surface-container-highest);
+  border: none;
+  border-radius: var(--md-shape-extra-small) var(--md-shape-extra-small) 0 0;
+  border-bottom: 1px solid var(--md-on-surface-variant);
+  color: var(--md-on-surface);
+  outline: none;
+  transition: border-bottom-color var(--md-duration-short4) var(--md-motion-standard),
+              border-bottom-width var(--md-duration-short2) linear;
+}
+
+.md-input:focus {
+  border-bottom: 2px solid var(--md-primary);
+}
+
+.md-input::placeholder { color: var(--md-on-surface-variant); }
+
+/* Outlined variant */
+.md-input-outlined {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: var(--md-font);
+  font-size: var(--md-body-large);
+  background-color: transparent;
+  border: 1px solid var(--md-outline);
+  border-radius: var(--md-shape-extra-small);
+  color: var(--md-on-surface);
+  outline: none;
+  transition: border-color var(--md-duration-short4) var(--md-motion-standard),
+              border-width var(--md-duration-short2) linear;
+}
+.md-input-outlined:focus  { border: 2px solid var(--md-primary); }
+.md-input-outlined::placeholder { color: var(--md-on-surface-variant); }
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 7: CHIPS M3
+   ──────────────────────────────────────────────────────────── */
+
+.md-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: var(--md-shape-full);
+  font-size: var(--md-label-large);
+  font-weight: 500;
+  border: 1px solid var(--md-outline-variant);
+  background-color: transparent;
+  color: var(--md-on-surface-variant);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--md-duration-short4) var(--md-motion-standard);
+  white-space: nowrap;
+}
+.md-chip:hover { background-color: rgba(28, 27, 31, 0.08); }
+.md-chip.active {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  border-color: transparent;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 8: NAVIGATION DRAWER (Sidebar Desktop)
+   ──────────────────────────────────────────────────────────── */
+
+.md-nav-drawer {
+  width: var(--md-sidebar-width);
+  background-color: var(--md-surface-container-low);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.md-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 28px;
+  border-radius: var(--md-shape-full);
+  margin: 2px 12px;
+  font-size: var(--md-label-large);
+  font-weight: 500;
+  color: var(--md-on-surface-variant);
+  cursor: pointer;
+  transition: background-color var(--md-duration-short4) var(--md-motion-standard),
+              color var(--md-duration-short4) var(--md-motion-standard);
+  position: relative;
+  overflow: hidden;
+}
+
+.md-nav-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--md-shape-full);
+  background: var(--md-on-surface-variant);
+  opacity: 0;
+  transition: opacity var(--md-duration-short2) linear;
+}
+.md-nav-item:hover::after  { opacity: 0.08; }
+.md-nav-item:active::after { opacity: 0.12; }
+
+.md-nav-item.active {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  font-weight: 700;
+}
+
+.md-nav-item .nav-icon {
+  font-size: 22px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.md-nav-divider {
+  height: 1px;
+  background-color: var(--md-outline-variant);
+  margin: 12px 16px;
+}
+
+.md-nav-section-label {
+  font-size: var(--md-label-small);
+  font-weight: 500;
+  color: var(--md-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 28px 4px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 9: TOP APP BAR (Navbar)
+   ──────────────────────────────────────────────────────────── */
+
+.md-top-bar {
+  height: var(--md-navbar-height);
+  background-color: var(--md-surface-container);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  box-shadow: var(--md-elevation-2);
+  z-index: 10;
+  position: sticky;
+  top: 0;
+}
+
+.md-top-bar-title {
+  font-size: var(--md-title-large);
+  font-weight: 400;
+  color: var(--md-on-surface);
+  flex: 1;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 10: BOTTOM NAVIGATION BAR (Móvil)
+   Solo visible en pantallas < 768px
+   ──────────────────────────────────────────────────────────── */
+
+.md-bottom-nav {
+  display: none; /* oculto en desktop */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--md-bottom-nav-height);
+  background-color: var(--md-surface-container);
+  border-top: 1px solid var(--md-outline-variant);
+  z-index: 20;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.md-bottom-nav-inner {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+
+.md-bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 8px 4px;
+  position: relative;
+  color: var(--md-on-surface-variant);
+  transition: color var(--md-duration-short4) var(--md-motion-standard);
+  border: none;
+  background: none;
+  font-family: var(--md-font);
+}
+
+.md-bottom-nav-item .bn-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 32px;
+  border-radius: var(--md-shape-full);
+  font-size: 22px;
+  transition: background-color var(--md-duration-short4) var(--md-motion-standard);
+}
+
+.md-bottom-nav-item .bn-label {
+  font-size: var(--md-label-medium);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.md-bottom-nav-item.active {
+  color: var(--md-on-secondary-container);
+}
+
+.md-bottom-nav-item.active .bn-indicator {
+  background-color: var(--md-secondary-container);
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 11: BADGES / CHIPS DE ESTADO
+   ──────────────────────────────────────────────────────────── */
+
+.md-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--md-shape-full);
+  font-size: var(--md-label-medium);
+  font-weight: 500;
+}
+
+.md-badge-primary {
+  background-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+.md-badge-success {
+  background-color: var(--md-success-container);
+  color: var(--md-on-success-container);
+}
+.md-badge-error {
+  background-color: var(--md-error-container);
+  color: var(--md-on-error-container);
+}
+.md-badge-warning {
+  background-color: var(--md-warning-container);
+  color: var(--md-warning);
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 12: ESTADOS GLOBALES
+   ──────────────────────────────────────────────────────────── */
+
+button:disabled, input:disabled, select:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.md-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.md-fade-in { animation: fadeIn var(--md-duration-medium2) var(--md-motion-standard); }
+
+/* ────────────────────────────────────────────────────────────
+   SECCIÓN 13: RESPONSIVE — MOBILE FIRST
+   ──────────────────────────────────────────────────────────── */
+
+/* Móvil: mostrar bottom nav, ocultar drawer */
+@media (max-width: 767px) {
+  .md-nav-drawer     { display: none !important; }
+  .md-bottom-nav     { display: block; }
+
+  /* Agregar padding inferior al contenido para no quedar tapado por el bottom nav */
+  .md-main-content {
+    padding-bottom: calc(var(--md-bottom-nav-height) + 1rem);
+  }
+
+  /* Top bar simplificada en mobile */
+  .md-top-bar-title { font-size: var(--md-title-medium); }
+}
+
+/* Desktop: ocultar bottom nav, mostrar drawer */
+@media (min-width: 768px) {
+  .md-bottom-nav    { display: none !important; }
+  .md-nav-drawer    { display: flex; }
+}
+
+/* Sidebar link legacy (mantener compatibilidad) */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 28px;
+  border-radius: var(--md-shape-full);
+  margin: 2px 12px;
+  font-size: var(--md-label-large);
+  font-weight: 500;
+  color: var(--md-on-surface-variant);
+  transition: background-color var(--md-duration-short4) var(--md-motion-standard);
+}
+
+.sidebar-link:hover {
+  background-color: rgba(28, 27, 31, 0.08);
+}
+
+.sidebar-link.active {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  font-weight: 700;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FIN DEL ARCHIVO — Material Design 3 Token System
+   ════════════════════════════════════════════════════════════ */
+
 
 /* ────────────────────────────────────────────────────────────
    SECCIÓN 1: VARIABLES DE DISEÑO

@@ -353,7 +353,7 @@ export default function CajaOperativa({
             <button
               onClick={handleCobrar}
               disabled={cart.length === 0 || procesando}
-              className="w-full bg-green-600 text-white rounded px-4 py-3 font-semibold disabled:opacity-50"
+              className="w-full bg-green-600 text-dark rounded px-4 py-3 font-semibold disabled:opacity-50"
             >
               {procesando ? 'Procesando...' : `Cobrar $${totalAPagar.toFixed(2)}`}
             </button>
