@@ -60,25 +60,25 @@
   --md-warning-container:   #ffecd4;
 
   /* Tipografía M3 */
-  --md-font:                'Roboto', system-ui, sans-serif;
-  --md-mono:                'Roboto Mono', monospace;
+  --md-font:                var(--font-roboto), 'Roboto', system-ui, sans-serif;
+  --md-mono:                var(--font-roboto-mono), 'Roboto Mono', monospace;
 
-  /* Escala tipográfica M3 */
-  --md-display-large:    57px;
-  --md-display-medium:   45px;
-  --md-display-small:    36px;
-  --md-headline-large:   32px;
-  --md-headline-medium:  28px;
-  --md-headline-small:   24px;
-  --md-title-large:      22px;
-  --md-title-medium:     16px;
-  --md-title-small:      14px;
-  --md-body-large:       16px;
-  --md-body-medium:      14px;
-  --md-body-small:       12px;
-  --md-label-large:      14px;
-  --md-label-medium:     12px;
-  --md-label-small:      11px;
+  /* Escala tipográfica M3 optimizada con rems adaptativos para alta legibilidad */
+  --md-display-large:    3.5rem;
+  --md-display-medium:   2.8rem;
+  --md-display-small:    2.25rem;
+  --md-headline-large:   2rem;
+  --md-headline-medium:  1.75rem;
+  --md-headline-small:   1.5rem;
+  --md-title-large:      1.375rem;
+  --md-title-medium:     1.125rem;
+  --md-title-small:      1rem;
+  --md-body-large:       1.125rem;
+  --md-body-medium:      1rem;
+  --md-body-small:       0.875rem;
+  --md-label-large:      1rem;
+  --md-label-medium:     0.875rem;
+  --md-label-small:      0.8125rem;
 
   /* Elevaciones M3 (box-shadow por nivel) */
   --md-elevation-0: none;
@@ -163,46 +163,66 @@ button { font-family: var(--md-font); cursor: pointer; border: none; background:
 
 /* Elevated Card */
 .md-card {
-  background-color: var(--md-surface-container-low);
-  border-radius: var(--md-shape-medium);
-  box-shadow: var(--md-elevation-1);
-  padding: 1.25rem;
-  transition: box-shadow var(--md-duration-short4) var(--md-motion-standard);
+  background-color: #ffffff;
+  border: 1px solid rgba(179, 209, 224, 0.4);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(15, 31, 46, 0.04), 0 1px 2px -1px rgba(15, 31, 46, 0.04);
+  padding: 1.25rem 1.5rem;
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), border-color 0.2s ease;
 }
 
 .md-card:hover {
-  box-shadow: var(--md-elevation-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -4px rgba(15, 31, 46, 0.08), 0 4px 6px -2px rgba(15, 31, 46, 0.03);
+  border-color: rgba(30, 58, 82, 0.25);
 }
 
 /* Filled Card */
 .md-card-filled {
-  background-color: var(--md-surface-container-highest);
-  border-radius: var(--md-shape-medium);
-  padding: 1.25rem;
+  background-color: #f7f9fc;
+  border: 1px solid #eef2f6;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
 }
 
 /* Outlined Card */
 .md-card-outlined {
-  background-color: var(--md-surface);
-  border: 1px solid var(--md-outline-variant);
-  border-radius: var(--md-shape-medium);
-  padding: 1.25rem;
+  background-color: #ffffff;
+  border: 1px solid #d9e8f0;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
 }
 
-/* Surface Container Card (hero/destacado) */
+/* Surface Container Card (Hero / Destacado con Gradiente Corporativo Azul Marina) */
 .md-card-primary {
-  background-color: var(--md-primary);
-  color: var(--md-on-primary);
-  border-radius: var(--md-shape-extra-large);
+  background: linear-gradient(135deg, #1e3a52 0%, #132738 100%);
+  color: #ffffff;
+  border-radius: 1.25rem;
   padding: 1.5rem;
-  box-shadow: var(--md-elevation-2);
+  box-shadow: 0 10px 25px -5px rgba(30, 58, 82, 0.35), 0 4px 10px -2px rgba(30, 58, 82, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.md-card-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .md-card-container {
-  background-color: var(--md-primary-container);
-  color: var(--md-on-primary-container);
-  border-radius: var(--md-shape-extra-large);
+  background-color: #f0f4f8;
+  color: #0f1f2e;
+  border: 1px solid #d9e8f0;
+  border-radius: 1.25rem;
   padding: 1.5rem;
+  transition: border-color 0.2s ease;
 }
 
 /* ────────────────────────────────────────────────────────────

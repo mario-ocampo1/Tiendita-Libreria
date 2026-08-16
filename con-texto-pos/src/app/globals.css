@@ -1,13 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 :root {
   --background: #fffbfe;
   --foreground: #1c1b1f;
+  --font-roboto-family: var(--font-roboto), 'Roboto', system-ui, -apple-system, sans-serif;
+}
+
+/* Escalado de fuente base adaptado a la pantalla */
+html {
+  font-family: var(--font-roboto-family);
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* En pantallas grandes / monitores Full HD o superiores, escalar suavemente */
+@media (min-width: 1440px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 18px;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Roboto', system-ui, sans-serif;
+  font-family: var(--font-roboto-family);
 }
+
