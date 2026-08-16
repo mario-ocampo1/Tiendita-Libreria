@@ -1,15 +1,21 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import {
+  Squares2X2Icon,
+  BanknotesIcon,
+  ChartBarIcon,
+  BookOpenIcon,
+} from '@heroicons/react/24/outline';
 import UserMenu from './components/UserMenu';
 import SyncIndicator from './components/SyncIndicator';
 import './dashboard.css';
 
 const NAV_ITEMS = [
-  { href: '/dashboard',          label: 'Resumen',   icon: '' },
-  { href: '/dashboard/caja',     label: 'Caja',      icon: '' },
-  { href: '/dashboard/metricas', label: 'Métricas',  icon: '' },
-  { href: '/dashboard/productos',label: 'Productos', icon: '' },
+  { href: '/dashboard',          label: 'Resumen',   Icon: Squares2X2Icon },
+  { href: '/dashboard/caja',     label: 'Caja',      Icon: BanknotesIcon },
+  { href: '/dashboard/metricas', label: 'Métricas',  Icon: ChartBarIcon },
+  { href: '/dashboard/productos',label: 'Productos', Icon: BookOpenIcon },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -40,17 +46,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
         {/* Navigation Drawer (Desktop) */}
-        <nav className="md-nav-drawer">
+        <nav className="md-nav-drawer" aria-label="Navegación principal">
           <p className="md-nav-section-label">Operaciones</p>
 
           {NAV_ITEMS.slice(0, 2).map((item) => (
             <a
               key={item.href}
               href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
               className={`md-nav-item ${isActive(item.href) ? 'active' : ''}`}
             >
-              <span className="nav-icon">{item.icon}</span>
-              {item.label}
+              <item.Icon className="w-5 h-5 nav-icon" aria-hidden="true" />
+              <span>{item.label}</span>
             </a>
           ))}
 
@@ -61,10 +68,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <a
               key={item.href}
               href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
               className={`md-nav-item ${isActive(item.href) ? 'active' : ''}`}
             >
-              <span className="nav-icon">{item.icon}</span>
-              {item.label}
+              <item.Icon className="w-5 h-5 nav-icon" aria-hidden="true" />
+              <span>{item.label}</span>
             </a>
           ))}
         </nav>
@@ -85,9 +93,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <a
               key={item.href}
               href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
               className={`md-bottom-nav-item ${isActive(item.href) ? 'active' : ''}`}
             >
-              <span className="bn-indicator">{item.icon}</span>
+              <span className="bn-indicator">
+                <item.Icon className="w-5 h-5" aria-hidden="true" />
+              </span>
               <span className="bn-label">{item.label}</span>
             </a>
           ))}

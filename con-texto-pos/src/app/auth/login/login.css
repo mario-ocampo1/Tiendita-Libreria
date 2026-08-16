@@ -139,7 +139,7 @@
 }
 
 .login-subtitle {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--ctc-text-muted);
   margin: 0;
   letter-spacing: 0.02em;
@@ -159,7 +159,7 @@
 }
 
 .field-label {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--ctc-blue-deep);
   letter-spacing: 0.03em;
@@ -169,7 +169,7 @@
 .field-input {
   width: 100%;
   padding: 0.75rem 1rem;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--ctc-text-main);
   background: var(--ctc-off-white);
   border: 1.5px solid #dde0f0;

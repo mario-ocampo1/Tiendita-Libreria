@@ -1,14 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { syncProductsFromSupabase, createProduct, updateProduct, deleteProduct, processSyncQueue } from '@/core/sync/productsSync';
-import { useEffect } from 'react';
 import { localDb, type LocalProduct } from '@/core/db/dexie';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { NumberedListIcon } from '@heroicons/react/24/solid';
+import {
+  PencilSquareIcon,
+  PlusIcon,
+  ArrowPathIcon,
+  XMarkIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
 
 export default function ProductosPage() {
-
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -122,35 +126,37 @@ export default function ProductosPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       {/* Encabezado y Acciones */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Catálogo de Productos</h1>
-          <p className="text-gray-600 text-sm">Gestiona el inventario y sincroniza con la nube.</p>
+          <h1 className="text-3xl font-bold text-blue-900">Catálogo de Productos</h1>
+          <p className="text-gray-600 mt-1">Gestioná el inventario y sincronizá en tiempo real con la nube</p>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex items-center gap-3">
           <button
             onClick={handleSync}
             disabled={loading}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 flex items-center gap-2"
+            className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2.5 rounded-xl text-sm font-medium transition-all disabled:opacity-50 border border-gray-200"
           >
-            {loading ? 'Sincronizando...' : 'Sincronizar Catálogo'}
+            <ArrowPathIcon className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} aria-hidden="true" />
+            <span>{loading ? 'Sincronizando...' : 'Sincronizar Catálogo'}</span>
           </button>
           <button
             onClick={handleNew}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"
+            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all shadow-xs active:scale-[0.98]"
           >
-            + Nuevo Producto
+            <PlusIcon className="w-5 h-5" aria-hidden="true" />
+            <span>Nuevo Producto</span>
           </button>
         </div>
       </div>
 
       {/* Tabla de Productos Locales */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-          <h2 className="text-base font-semibold text-gray-800">
-            Productos en Inventario ({localProducts?.length || 0})
+      <div className="md-card-outlined overflow-hidden p-0">
+        <div className="px-6 py-4 border-b border-gray-200/80 flex justify-between items-center bg-gray-50/50">
+          <h2 className="text-base font-bold text-blue-900">
+            Productos en Inventario <span className="font-mono text-sm text-gray-500 font-normal">({localProducts?.length || 0})</span>
           </h2>
         </div>
 
@@ -162,42 +168,44 @@ export default function ProductosPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200 text-sm text-gray-500">
-                  <th className="px-6 py-3 font-medium">Nombre / Título</th>
-                  <th className="px-6 py-3 font-medium">Código / ISBN</th>
-                  <th className="px-6 py-3 font-medium text-right">Precio</th>
-                  <th className="px-6 py-3 font-medium text-right">Stock</th>
-                  <th className="px-6 py-3 font-medium text-right">Editar</th>
+                <tr className="bg-gray-50/80 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3.5">Nombre / Título</th>
+                  <th className="px-6 py-3.5">Código / ISBN</th>
+                  <th className="px-6 py-3.5 text-right">Precio</th>
+                  <th className="px-6 py-3.5 text-right">Stock</th>
+                  <th className="px-6 py-3.5 text-right">Acción</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-100 text-sm">
                 {localProducts.map((product: LocalProduct) => (
-                  <tr key={product.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                  <tr key={product.id} className="hover:bg-blue-50/40 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-gray-900">
                       {product.nombre}
                       {product.pending_sync && (
-                        <span className="ml-2 text-xs font-normal text-amber-600" title="Pendiente de sincronizar">
+                        <span className="ml-2 text-xs font-normal text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200" title="Pendiente de sincronizar">
                           ⏳ pendiente
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500 font-mono">
+                    <td className="px-6 py-4 text-gray-600 font-mono text-xs">
                       {product.codigo_barras}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 text-right font-medium">
-                      ${product.precio_venta?.toLocaleString('es-AR')}
+                    <td className="px-6 py-4 text-blue-900 text-right font-mono font-bold">
+                      ${product.precio_venta?.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500 text-right">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${product.stock_actual > 5 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    <td className="px-6 py-4 text-right">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-mono font-semibold ${product.stock_actual > 5 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                         {product.stock_actual} un.
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500 text-right">
+                    <td className="px-6 py-4 text-right">
                       <button
-                        className="text-blue-600 hover:text-blue-800 font-medium"
+                        className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors inline-flex items-center justify-center"
                         onClick={() => handleEdit(product)}
+                        title="Editar producto"
+                        aria-label={`Editar ${product.nombre}`}
                       >
-                        <NumberedListIcon className="w-5 h-5" />
+                        <PencilSquareIcon className="w-5 h-5" />
                       </button>
                     </td>
                   </tr>
@@ -210,23 +218,24 @@ export default function ProductosPage() {
 
       {/* Modal para Carga / Edición de Producto */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-              <h3 className="text-lg font-bold text-gray-900">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-blue-200">
+            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/80">
+              <h3 className="text-lg font-bold text-blue-900">
                 {editingProduct ? 'Editar Producto' : 'Agregar Nuevo Producto'}
               </h3>
               <button
                 onClick={handleCloseModal}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold"
+                className="text-gray-400 hover:text-gray-600 p-1 rounded-lg transition-colors"
+                aria-label="Cerrar modal"
               >
-                ✕
+                <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
                   Nombre o Título *
                 </label>
                 <input
@@ -235,12 +244,12 @@ export default function ProductosPage() {
                   placeholder="Ej: Rayuela - Julio Cortázar"
                   value={formData.nombre}
                   onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all text-sm bg-gray-50/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
                   Código de Barras / ISBN
                 </label>
                 <input
@@ -248,13 +257,13 @@ export default function ProductosPage() {
                   placeholder="Escanear o ingresar manual"
                   value={formData.codigo_barras}
                   onChange={(e) => setFormData({ ...formData, codigo_barras: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-mono"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all font-mono text-sm bg-gray-50/50"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
                     Precio ($) *
                   </label>
                   <input
@@ -264,12 +273,12 @@ export default function ProductosPage() {
                     placeholder="0.00"
                     value={formData.precio_venta}
                     onChange={(e) => setFormData({ ...formData, precio_venta: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all font-mono text-sm bg-gray-50/50"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
                     Stock {editingProduct ? 'Actual' : 'Inicial'}
                   </label>
                   <input
@@ -277,7 +286,7 @@ export default function ProductosPage() {
                     placeholder="0"
                     value={formData.stock_actual}
                     onChange={(e) => setFormData({ ...formData, stock_actual: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all font-mono text-sm bg-gray-50/50"
                   />
                 </div>
               </div>
@@ -288,9 +297,10 @@ export default function ProductosPage() {
                     type="button"
                     onClick={handleDelete}
                     disabled={loading}
-                    className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg font-medium text-sm transition-colors disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl font-medium text-xs transition-colors disabled:opacity-50"
                   >
-                    Eliminar
+                    <TrashIcon className="w-4 h-4" />
+                    <span>Eliminar</span>
                   </button>
                 ) : (
                   <span />
@@ -300,14 +310,14 @@ export default function ProductosPage() {
                   <button
                     type="button"
                     onClick={handleCloseModal}
-                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-sm transition-colors"
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 font-medium text-xs transition-colors"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors disabled:opacity-50"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium text-xs transition-colors disabled:opacity-50 shadow-xs"
                   >
                     {loading ? 'Guardando...' : editingProduct ? 'Actualizar Producto' : 'Guardar Producto'}
                   </button>
@@ -320,3 +330,4 @@ export default function ProductosPage() {
     </div>
   );
 }
+

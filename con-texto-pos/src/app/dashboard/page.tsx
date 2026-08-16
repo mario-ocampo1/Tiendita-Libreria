@@ -29,25 +29,28 @@ export default async function DashboardPage() {
       {/* Encabezado */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-[#1a237e]">Resumen del día</h1>
+          <h1 className="text-3xl font-bold text-blue-900">Resumen del día</h1>
           <p className="text-gray-600 mt-1 capitalize">
-            {fechaHoyFormatted} · un vistazo a tu comercio
+            {fechaHoyFormatted} · Un vistazo a tu comercio
           </p>
         </div>
         <div
-          className={`flex items-center gap-2 border rounded-full px-4 py-2 ${
+          className={`flex items-center gap-2 border rounded-full px-4 py-2 text-sm font-medium ${
             dashboardData.isCajaOpen
-              ? 'bg-[#e8eaf6] border-[#d0d5eb] text-[#1a237e]'
+              ? 'bg-blue-50 border-blue-200 text-blue-900'
               : 'bg-gray-100 border-gray-300 text-gray-600'
           }`}
+          role="status"
+          aria-live="polite"
         >
           <span
-            className={`w-2 h-2 rounded-full ${
-              dashboardData.isCajaOpen ? 'bg-[#1a237e]' : 'bg-gray-400'
+            className={`w-2.5 h-2.5 rounded-full ${
+              dashboardData.isCajaOpen ? 'bg-green-600' : 'bg-gray-400'
             }`}
+            aria-hidden="true"
           />
-          <span className="text-sm font-medium">
-            {dashboardData.isCajaOpen ? 'Caja abierta' : 'Caja cerrada'}
+          <span>
+            {dashboardData.isCajaOpen ? 'Caja Abierta' : 'Caja Cerrada'}
           </span>
         </div>
       </div>

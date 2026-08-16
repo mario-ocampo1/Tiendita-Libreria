@@ -19,7 +19,7 @@ export default async function CajaPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Caja del día</h1>
+          <h1 className="text-3xl font-bold text-blue-900">Caja del día</h1>
           <p className="text-gray-600 mt-1">
             No hay una caja abierta. Abrí una para empezar a vender.
           </p>
@@ -34,8 +34,8 @@ export default async function CajaPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Caja del día</h1>
-        <p className="text-gray-600 mt-1">Escaneá productos y cerrá la venta</p>
+        <h1 className="text-3xl font-bold text-blue-900">Caja del día</h1>
+        <p className="text-gray-600 mt-1">Escaneá productos y registrá la venta</p>
       </div>
       <CajaOperativa
         sesion={sesion}
