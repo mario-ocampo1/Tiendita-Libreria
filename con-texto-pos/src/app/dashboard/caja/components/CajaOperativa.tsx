@@ -205,15 +205,18 @@ export default function CajaOperativa({
     }
   }
 
+  const totalFormatted = totalAPagar.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const subtotalFormatted = totalCarrito.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Barra superior de estado y acciones */}
-      <div className="flex flex-wrap justify-between items-center gap-4 bg-white p-3 rounded-lg border">
-        <div className={`flex items-center gap-2 text-sm px-3 py-1.5 rounded-full ${isOnline ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
-          <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-yellow-500'}`} />
-          {isOnline ? 'En línea' : 'Sin conexión — las ventas se guardan localmente'}
+      <div className="flex flex-wrap justify-between items-center gap-4 bg-white p-4 rounded-2xl border border-blue-200 shadow-xs">
+        <div className={`flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full ${isOnline ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-amber-50 text-amber-800 border border-amber-200'}`}>
+          <span className={`w-2.5 h-2.5 rounded-full ${isOnline ? 'bg-green-600' : 'bg-amber-600'}`} aria-hidden="true" />
+          <span>{isOnline ? 'En Línea — Sincronización Automática' : 'Modo Offline — Ventas guardadas en la base local'}</span>
           {pendientes > 0 && (
-            <span className="ml-2 bg-yellow-200 text-yellow-800 rounded-full px-2 py-0.5 text-xs">
+            <span className="ml-2 bg-amber-200 text-amber-900 rounded-full px-2 py-0.5 text-xs font-mono font-bold">
               {pendientes} pendiente{pendientes > 1 ? 's' : ''}
             </span>
           )}
@@ -221,7 +224,7 @@ export default function CajaOperativa({
 
         <button
           onClick={() => setMostrarArqueo(true)}
-          className="bg-red-600 hover:bg-red-700 text-white font-medium text-sm px-4 py-2 rounded-md shadow-sm transition"
+          className="bg-red-600 hover:bg-red-700 text-white font-medium text-xs px-4 py-2.5 rounded-xl shadow-xs transition-all active:scale-[0.98]"
         >
           Realizar Arqueo y Cerrar Caja
         </button>
@@ -230,9 +233,9 @@ export default function CajaOperativa({
       <div className="grid md:grid-cols-3 gap-6">
         {/* Columna izquierda: escaneo + carrito */}
         <div className="md:col-span-2 space-y-4">
-          <form onSubmit={handleScan} className="bg-white rounded-lg border p-4 relative">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Buscar por nombre o código de barras
+          <form onSubmit={handleScan} className="bg-white rounded-2xl border border-blue-200 p-5 relative shadow-xs">
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2">
+              Buscar o Escanear Producto
             </label>
             <input
               ref={inputRef}
@@ -241,68 +244,69 @@ export default function CajaOperativa({
               onChange={(e) => setCodigo(e.target.value)}
               onFocus={() => { if (sugerencias.length > 0) setMostrarSugerencias(true); }}
               disabled={buscando}
-              className="w-full border rounded px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Escribí un nombre o escaneá el código..."
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-600 bg-gray-50/50 font-mono"
+              placeholder="Escaneá el código de barras o escribí un nombre..."
             />
 
             {/* Lista desplegable de sugerencias */}
             {mostrarSugerencias && sugerencias.length > 0 && (
-              <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto">
+              <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-blue-200 rounded-xl shadow-xl max-h-60 overflow-y-auto divide-y divide-gray-100">
                 {sugerencias.map((prod) => (
                   <li
                     key={prod.id}
                     onClick={() => agregarProducto(prod)}
-                    className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex justify-between items-center border-b last:border-0"
+                    className="px-4 py-3 hover:bg-blue-50/60 cursor-pointer flex justify-between items-center transition-colors"
                   >
                     <div>
-                      <p className="font-medium text-gray-800">{prod.nombre}</p>
-                      <p className="text-xs text-gray-500">Cód: {prod.codigo_barras || 'N/A'} | Stock: {prod.stock_actual}</p>
+                      <p className="font-semibold text-gray-900 text-sm">{prod.nombre}</p>
+                      <p className="text-xs text-gray-500 font-mono mt-0.5">Cód: {prod.codigo_barras || 'N/A'} · Stock: {prod.stock_actual}</p>
                     </div>
-                    <span className="font-semibold text-blue-600">${prod.precio_venta}</span>
+                    <span className="font-bold font-mono text-blue-900 text-base">${prod.precio_venta?.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </li>
                 ))}
               </ul>
             )}
 
-            {errorMsg && <p className="text-red-600 text-sm mt-2">{errorMsg}</p>}
+            {errorMsg && <p className="text-red-600 text-xs font-medium mt-2">{errorMsg}</p>}
           </form>
 
-          <div className="bg-white rounded-lg border overflow-hidden">
+          {/* Tabla de Carrito */}
+          <div className="bg-white rounded-2xl border border-blue-200 overflow-hidden shadow-xs">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50/80 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 <tr>
-                  <th className="text-left p-3">Producto</th>
-                  <th className="text-center p-3">Cant.</th>
-                  <th className="text-right p-3">Precio</th>
-                  <th className="text-right p-3">Subtotal</th>
-                  <th className="p-3"></th>
+                  <th className="text-left p-3.5 px-4">Producto</th>
+                  <th className="text-center p-3.5">Cant.</th>
+                  <th className="text-right p-3.5">Precio</th>
+                  <th className="text-right p-3.5">Subtotal</th>
+                  <th className="p-3.5 text-right">Quitar</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-gray-100">
                 {cart.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="text-center p-6 text-gray-400">
-                      Todavía no escaneaste ningún producto
+                    <td colSpan={5} className="text-center p-8 text-gray-400 text-sm">
+                      🛒 Escaneá o seleccioná un producto para iniciar la venta
                     </td>
                   </tr>
                 )}
                 {cart.map((item) => (
-                  <tr key={item.product_id} className="border-t">
-                    <td className="p-3">{item.nombre}</td>
-                    <td className="p-3 text-center">
+                  <tr key={item.product_id} className="hover:bg-blue-50/30 transition-colors">
+                    <td className="p-3.5 px-4 font-semibold text-gray-900">{item.nombre}</td>
+                    <td className="p-3.5 text-center">
                       <input
                         type="number"
-                        min={0}
+                        min={1}
                         value={item.cantidad}
                         onChange={(e) => actualizarCantidad(item.product_id, Number(e.target.value))}
-                        className="w-16 border rounded px-2 py-1 text-center"
+                        className="w-16 border border-gray-300 rounded-lg px-2 py-1 text-center font-mono font-semibold bg-gray-50/50"
                       />
                     </td>
-                    <td className="p-3 text-right">${item.precio_unitario.toFixed(2)}</td>
-                    <td className="p-3 text-right">${(item.cantidad * item.precio_unitario).toFixed(2)}</td>
-                    <td className="p-3 text-right">
-                      <button onClick={() => quitarItem(item.product_id)} className="text-red-500 text-xs">
-                        Quitar
+                    <td className="p-3.5 text-right font-mono font-medium text-gray-700">${item.precio_unitario.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="p-3.5 text-right font-mono font-bold text-blue-900">${(item.cantidad * item.precio_unitario).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="p-3.5 text-right">
+                      <button onClick={() => quitarItem(item.product_id)} className="text-red-600 hover:text-red-800 font-semibold text-xs transition-colors">
+                        ✕ Quitar
                       </button>
                     </td>
                   </tr>
@@ -314,48 +318,52 @@ export default function CajaOperativa({
 
         {/* Columna derecha: totales + cobro */}
         <div className="space-y-4">
-          <div className="bg-white rounded-lg border p-4 space-y-3">
-            <div className="flex justify-between text-sm">
+          <div className="bg-white rounded-2xl border border-blue-200 p-5 space-y-4 shadow-xs">
+            <h3 className="text-base font-bold text-blue-900 border-b border-gray-100 pb-3">Resumen de Venta</h3>
+
+            <div className="flex justify-between text-sm text-gray-600">
               <span>Subtotal</span>
-              <span>${totalCarrito.toFixed(2)}</span>
+              <span className="font-mono font-semibold text-gray-900">${subtotalFormatted}</span>
             </div>
-            <div className="flex justify-between items-center text-sm">
-              <span>Descuento</span>
+
+            <div className="flex justify-between items-center text-sm text-gray-600">
+              <span>Descuento ($)</span>
               <input
                 type="number"
                 min={0}
                 value={descuento}
                 onChange={(e) => setDescuento(Number(e.target.value))}
-                className="w-24 border rounded px-2 py-1 text-right"
+                className="w-24 border border-gray-300 rounded-xl px-2.5 py-1 text-right font-mono font-semibold bg-gray-50/50"
               />
             </div>
-            <div className="flex justify-between font-bold text-lg border-t pt-3">
-              <span>Total</span>
-              <span>${totalAPagar.toFixed(2)}</span>
+
+            <div className="flex justify-between items-center border-t border-gray-200 pt-3">
+              <span className="font-bold text-gray-900 text-base">Total a Cobrar</span>
+              <span className="font-bold font-mono text-2xl text-blue-900">${totalFormatted}</span>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
                 Método de pago
               </label>
               <select
                 value={metodoPago}
                 onChange={(e) => setMetodoPago(e.target.value as typeof metodoPago)}
-                className="w-full border rounded px-3 py-2"
+                className="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm bg-gray-50/50 font-medium focus:ring-2 focus:ring-blue-600 outline-none"
               >
-                <option value="efectivo">Efectivo</option>
-                <option value="tarjeta">Tarjeta</option>
-                <option value="transferencia">Transferencia</option>
-                <option value="mercado_pago">Mercado Pago</option>
+                <option value="efectivo">💵 Efectivo</option>
+                <option value="tarjeta">💳 Tarjeta (Débito/Crédito)</option>
+                <option value="transferencia">🏦 Transferencia Bancaria</option>
+                <option value="mercado_pago">📱 Mercado Pago (QR)</option>
               </select>
             </div>
 
             <button
               onClick={handleCobrar}
               disabled={cart.length === 0 || procesando}
-              className="w-full bg-green-600 text-dark rounded px-4 py-3 font-semibold disabled:opacity-50"
+              className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl px-4 py-3.5 font-bold font-mono text-lg transition-all shadow-xs active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
-              {procesando ? 'Procesando...' : `Cobrar $${totalAPagar.toFixed(2)}`}
+              {procesando ? 'Procesando Venta...' : `Cobrar $${totalFormatted}`}
             </button>
           </div>
         </div>
